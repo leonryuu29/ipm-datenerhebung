@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KI-Wrapper: Strategisches Variantenmanagement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .tab-btn.active { border-bottom: 3px solid #2563eb; color: #1d4ed8; font-weight: 600; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<div class="flex flex-col lg:flex-row min-h-screen">
+    <!-- Sidebar: 5 Strategische Dimensionen -->
+    <aside class="w-full lg:w-96 bg-white border-r border-slate-200 p-6 shadow-sm overflow-y-auto">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="text-2xl">🎯</span>
+            <h2 class="text-lg font-bold text-slate-900">5 Strategische Dimensionen</h2>
+        </div>
+        <p class="text-xs text-slate-500 mb-6">Stellen Sie die Leitplanken ein oder laden Sie Ihre eigene CSV/JSON-Datei hoch. Alles läuft direkt im Browser.</p>
+
+        <!-- Datei Upload (Drag & Drop / Input) -->
+        <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <label class="block text-xs font-bold text-blue-900 uppercase mb-2">📂 Eigene Stückliste / Portfolio laden (Optional)</label>
+            <input type="file" id="fileInput" accept=".csv,.json" class="block w-full text-xs text-slate-600 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"/>
+            <div class="flex justify-between items-center mt-2">
+                <span id="fileStatus" class="text-[11px] text-blue-700">Aktuell: Demo-Datensatz (E-Bike Serie X)</span>
+                <button onclick="downloadTemplate()" class="text-[11px] underline text-blue-800 hover:text-blue-600">CSV-Vorlage</button>
+            </div>
+        </div>
+
+        <div class="space-y-5 text-sm">
+            <!-- 1. Markt & Vertrieb -->
+            <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                <h3 class="font-semibold text-slate-800 mb-3">1. Markt & Vertrieb</h3>
+                <label class="block text-xs text-slate-600 mb-1">Mindest-Umsatzabdeckung: <span id="val_min_market_cov" class="font-bold text-slate-900">90</span>%</label>
+                <input type="range" id="min_market_cov" min="50" max="100" value="90" class="w-full accent-blue-600 mb-3" oninput="updateDashboard()">
+                <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+                    <input type="checkbox" id="protect_must_haves" checked class="rounded text-blue-600" onchange="updateDashboard()">
+                    K.O.-Kriterien / Kernmärkte schützen
+                </label>
+            </div>
+
+            <!-- 2. Produktion & Komplexität -->
+            <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                <h3 class="font-semibold text-slate-800 mb-3">2. Produktion & Komplexität</h3>
+                <label class="block text-xs text-slate-600 mb-1">Kundenentkopplungspunkt</label>
+                <select id="decoupling_point" class="w-full p-1.5 text-xs border border-slate-300 rounded mb-3 bg-white" onchange="updateDashboard()">
+                    <option value="Assemble-to-Order (Späte Varianz)">Assemble-to-Order (Späte Varianz)</option>
+                    <option value="Make-to-Stock (Standard)">Make-to-Stock (Standard)</option>
+                    <option value="Engineer-to-Order (Losgröße 1)">Engineer-to-Order (Losgröße 1)</option>
+                </select>
+                <label class="block text-xs text-slate-600 mb-1">Max. Rüstkosten-Index (1-10): <span id="val_max_setup_index" class="font-bold text-slate-900">7</span></label>
+                <input type="range" id="max_setup_index" min="1" max="10" value="7" class="w-full accent-blue-600 mb-3" oninput="updateDashboard()">
+                <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+                    <input type="checkbox" id="over_spec_allowed" checked class="rounded text-blue-600" onchange="updateDashboard()">
+                    Über-Spezifikation (Einheitsmodule) erlauben
+                </label>
+            </div>
+
+            <!-- 3. Finanzen & Controlling -->
+            <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                <h3 class="font-semibold text-slate-800 mb-3">3. Finanzen & Controlling</h3>
+                <label class="block text-xs text-slate-600 mb-1">Mindest-Marge / DB: <span id="val_min_margin" class="font-bold text-slate-900">18</span>%</label>
+                <input type="range" id="min_margin" min="0" max="40" value="18" class="w-full accent-blue-600 mb-3" oninput="updateDashboard()">
+                <label class="block text-xs text-slate-600 mb-1">Mindestabsatz pro Jahr (MOQ): <span id="val_min_moq" class="font-bold text-slate-900">250</span> Stk.</label>
+                <input type="range" id="min_moq" min="0" max="1500" step="50" value="250" class="w-full accent-blue-600" oninput="updateDashboard()">
+            </div>
+
+            <!-- 4. Einkauf & Supply Chain -->
+            <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                <h3 class="font-semibold text-slate-800 mb-3">4. Einkauf & Supply Chain</h3>
+                <label class="block text-xs text-slate-600 mb-1">Ziel-Gleichteilequote (Carry-Over): <span id="val_min_cop_rate" class="font-bold text-slate-900">60</span>%</label>
+                <input type="range" id="min_cop_rate" min="10" max="90" value="60" class="w-full accent-blue-600 mb-3" oninput="updateDashboard()">
+                <label class="block text-xs text-slate-600 mb-1">Bündelungs-Strategie</label>
+                <select id="sourcing_strat" class="w-full p-1.5 text-xs border border-slate-300 rounded bg-white" onchange="updateDashboard()">
+                    <option value="Single-Sourcing (Max. Mengenrabatt)">Single-Sourcing (Max. Mengenrabatt)</option>
+                    <option value="Dual-Sourcing (Risikominimierung)">Dual-Sourcing (Risikominimierung)</option>
+                </select>
+            </div>
+
+            <!-- 5. R&D & Lebenszyklus -->
+            <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                <h3 class="font-semibold text-slate-800 mb-3">5. R&D & Lebenszyklus</h3>
+                <label class="flex items-center gap-2 text-xs text-slate-700 mb-2 cursor-pointer">
+                    <input type="checkbox" id="protect_future" checked class="rounded text-blue-600" onchange="updateDashboard()">
+                    Zukunftstechnologien schützen
+                </label>
+                <label class="flex items-center gap-2 text-xs text-slate-700 cursor-pointer">
+                    <input type="checkbox" id="kill_phased_out" checked class="rounded text-blue-600" onchange="updateDashboard()">
+                    Auslaufmodelle konsequent streichen
+                </label>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 lg:p-8 overflow-y-auto">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-slate-900">⚙️ KI-Wrapper: Strategisches Variantenmanagement</h1>
+            <p class="text-sm text-slate-600">Standalone-Version (Ohne Installation). Übersetzt die Unternehmensstrategie visuell in Datenfilter und generiert den Steuerungs-Prompt für den KI-Agenten.</p>
+        </div>
+
+        <!-- KPI Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="text-xs text-slate-500 uppercase font-semibold">Aktive Varianten (Neu / Alt)</div>
+                <div id="kpi_variants" class="text-2xl font-bold text-slate-900 mt-1">7 / 10</div>
+                <div id="kpi_complexity" class="text-xs font-medium text-emerald-600 mt-1">-30% Komplexität</div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="text-xs text-slate-500 uppercase font-semibold">Erreichte Umsatzabdeckung</div>
+                <div id="kpi_coverage" class="text-2xl font-bold text-slate-900 mt-1">91.8%</div>
+                <div id="kpi_coverage_diff" class="text-xs font-medium text-emerald-600 mt-1">+1.8% vs. Ziel</div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="text-xs text-slate-500 uppercase font-semibold">Ø Marge (Neues Portfolio)</div>
+                <div id="kpi_margin" class="text-2xl font-bold text-slate-900 mt-1">26.4%</div>
+                <div id="kpi_margin_target" class="text-xs text-slate-500 mt-1">Ziel: >18%</div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div class="text-xs text-slate-500 uppercase font-semibold">Entkopplungspunkt</div>
+                <div id="kpi_decoupling" class="text-lg font-bold text-blue-700 mt-1 truncate">Assemble-to-Order</div>
+                <div class="text-xs text-slate-500 mt-1">Fertigungsfokus</div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+            <div class="lg:col-span-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <h3 class="text-sm font-bold text-slate-800 mb-1">📊 Portfolio-Matrix: Markt-Erfolg vs. Fertigungskomplexität</h3>
+                <p class="text-xs text-slate-500 mb-2">Blasengröße = Umsatz (TEUR) | Gestrichelte Linien = Eingestellte Mindest-Schwellenwerte</p>
+                <div id="bubbleChart" class="w-full h-80"></div>
+            </div>
+            <div class="lg:col-span-2 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <h3 class="text-sm font-bold text-slate-800 mb-1">🕸️ Strategisches Radar-Profil</h3>
+                <p class="text-xs text-slate-500 mb-2">Visueller Fingerabdruck Ihrer Strategie-Einstellung</p>
+                <div id="radarChart" class="w-full h-80"></div>
+            </div>
+        </div>
+
+        <!-- Tabs Section -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="flex border-b border-slate-200 bg-slate-50 px-4">
+                <button onclick="switchTab('tab-prompt')" id="btn-tab-prompt" class="tab-btn active py-3 px-4 text-sm text-slate-600 hover:text-slate-900">🤖 1. Generierter System-Prompt (Wrapper-Output)</button>
+                <button onclick="switchTab('tab-ai')" id="btn-tab-ai" class="tab-btn py-3 px-4 text-sm text-slate-600 hover:text-slate-900">💡 2. Simulierte KI-Analyse</button>
+                <button onclick="switchTab('tab-table')" id="btn-tab-table" class="tab-btn py-3 px-4 text-sm text-slate-600 hover:text-slate-900">📋 3. Detail-Stückliste & Status</button>
+            </div>
+
+            <!-- Tab 1: Prompt -->
+            <div id="tab-prompt" class="p-6">
+                <div class="flex justify-between items-center mb-3">
+                    <p class="text-xs text-slate-600">Dieser Prompt wird live aus Ihren Einstellungen und der geladenen Datei erzeugt. Sie können ihn direkt kopieren und in ChatGPT, Claude oder Ihr Firmen-LLM einfügen:</p>
+                    <button onclick="copyPrompt()" id="copyBtn" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2 px-4 rounded shadow-sm transition">📋 Prompt kopieren</button>
+                </div>
+                <pre id="promptOutput" class="bg-slate-900 text-slate-100 p-4 rounded-lg text-xs overflow-x-auto leading-relaxed font-mono"></pre>
+            </div>
+
+            <!-- Tab 2: AI Output -->
+            <div id="tab-ai" class="p-6 hidden">
+                <div id="aiSimulationOutput" class="prose max-w-none text-sm space-y-4"></div>
+            </div>
+
+            <!-- Tab 3: Data Table -->
+            <div id="tab-table" class="p-6 hidden overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
+                            <th class="p-2.5">Variante</th>
+                            <th class="p-2.5">Umsatz (TEUR)</th>
+                            <th class="p-2.5">Marge (%)</th>
+                            <th class="p-2.5">Absatz (Stk)</th>
+                            <th class="p-2.5">Rüstkosten-Index</th>
+                            <th class="p-2.5">Status</th>
+                            <th class="p-2.5">Must-Have</th>
+                            <th class="p-2.5">KI-Vorab-Empfehlung</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-slate-200"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+// Standard-Datensatz (E-Bike Antriebssysteme)
+let portfolioData = [
+    {"Variante": "V1_Basis_250W_400Wh", "Umsatz_TEUR": 1200, "Marge_Pct": 28, "Absatz_Stk": 4500, "Ruestkosten_Index": 2, "Status": "Standard", "Must_Have": true},
+    {"Variante": "V2_Perf_250W_600Wh", "Umsatz_TEUR": 1850, "Marge_Pct": 34, "Absatz_Stk": 5200, "Ruestkosten_Index": 3, "Status": "Standard", "Must_Have": true},
+    {"Variante": "V3_Cargo_500W_800Wh", "Umsatz_TEUR": 800, "Marge_Pct": 31, "Absatz_Stk": 1800, "Ruestkosten_Index": 5, "Status": "Standard", "Must_Have": false},
+    {"Variante": "V4_City_250W_300Wh", "Umsatz_TEUR": 320, "Marge_Pct": 14, "Absatz_Stk": 1100, "Ruestkosten_Index": 4, "Status": "Auslauf", "Must_Have": false},
+    {"Variante": "V5_Speed_750W_1000Wh", "Umsatz_TEUR": 290, "Marge_Pct": 22, "Absatz_Stk": 420, "Ruestkosten_Index": 8, "Status": "Standard", "Must_Have": false},
+    {"Variante": "V6_Custom_Color_Blue", "Umsatz_TEUR": 65, "Marge_Pct": 9, "Absatz_Stk": 130, "Ruestkosten_Index": 9, "Status": "Sonderlocke", "Must_Have": false},
+    {"Variante": "V7_NextGen_SolidState", "Umsatz_TEUR": 95, "Marge_Pct": 15, "Absatz_Stk": 110, "Ruestkosten_Index": 7, "Status": "Zukunft", "Must_Have": false},
+    {"Variante": "V8_US_Fleet_Special", "Umsatz_TEUR": 410, "Marge_Pct": 19, "Absatz_Stk": 950, "Ruestkosten_Index": 6, "Status": "US-Markt", "Must_Have": true},
+    {"Variante": "V9_Retro_Display_V1", "Umsatz_TEUR": 45, "Marge_Pct": 8, "Absatz_Stk": 85, "Ruestkosten_Index": 8, "Status": "Auslauf", "Must_Have": false},
+    {"Variante": "V10_Light_Carbon_250W", "Umsatz_TEUR": 180, "Marge_Pct": 26, "Absatz_Stk": 310, "Ruestkosten_Index": 7, "Status": "Zukunft", "Must_Have": false}
+];
+
+// Datei-Upload Handler (CSV oder JSON)
+document.getElementById('fileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        const content = evt.target.result;
+        try {
+            if (file.name.endsWith('.json')) {
+                portfolioData = JSON.parse(content);
+            } else if (file.name.endsWith('.csv')) {
+                const lines = content.trim().split('\n');
+                const headers = lines[0].split(/[,;]/).map(h => h.trim());
+                portfolioData = lines.slice(1).map(line => {
+                    const vals = line.split(/[,;]/).map(v => v.trim());
+                    let obj = {};
+                    headers.forEach((h, i) => {
+                        let val = vals[i];
+                        if (['Umsatz_TEUR', 'Marge_Pct', 'Absatz_Stk', 'Ruestkosten_Index'].includes(h)) {
+                            val = parseFloat(val) || 0;
+                        } else if (h === 'Must_Have') {
+                            val = (val.toLowerCase() === 'true' || val === '1' || val.toLowerCase() === 'ja');
+                        }
+                        obj[h] = val;
+                    });
+                    return obj;
+                });
+            }
+            document.getElementById('fileStatus').innerText = "Geladen: " + file.name + " (" + portfolioData.length + " Varianten)";
+            updateDashboard();
+        } catch (err) {
+            alert("Fehler beim Lesen der Datei. Bitte prüfen Sie das Format (CSV oder JSON).");
+        }
+    };
+    reader.readAsText(file);
+});
+
+function downloadTemplate() {
+    const headers = "Variante,Umsatz_TEUR,Marge_Pct,Absatz_Stk,Ruestkosten_Index,Status,Must_Have\n";
+    const rows = portfolioData.map(r => `${r.Variante},${r.Umsatz_TEUR},${r.Marge_Pct},${r.Absatz_Stk},${r.Ruestkosten_Index},${r.Status},${r.Must_Have}`).join("\n");
+    const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "varianten_vorlage.csv";
+    link.click();
+}
+
+function updateDashboard() {
+    // 1. Parameter auslesen
+    const minMarketCov = parseInt(document.getElementById('min_market_cov').value);
+    const protectMustHaves = document.getElementById('protect_must_haves').checked;
+    const decouplingPoint = document.getElementById('decoupling_point').value;
+    const maxSetupIndex = parseInt(document.getElementById('max_setup_index').value);
+    const overSpecAllowed = document.getElementById('over_spec_allowed').checked;
+    const minMargin = parseInt(document.getElementById('min_margin').value);
+    const minMoq = parseInt(document.getElementById('min_moq').value);
+    const minCopRate = parseInt(document.getElementById('min_cop_rate').value);
+    const sourcingStrat = document.getElementById('sourcing_strat').value;
+    const protectFuture = document.getElementById('protect_future').checked;
+    const killPhasedOut = document.getElementById('kill_phased_out').checked;
+
+    // Labels aktualisieren
+    document.getElementById('val_min_market_cov').innerText = minMarketCov;
+    document.getElementById('val_max_setup_index').innerText = maxSetupIndex;
+    document.getElementById('val_min_margin').innerText = minMargin;
+    document.getElementById('val_min_moq').innerText = minMoq;
+    document.getElementById('val_min_cop_rate').innerText = minCopRate;
+
+    // 2. Portfolio evaluieren
+    const evaluated = portfolioData.map(row => {
+        let decision = "Behalten (Optimal)";
+        if (protectMustHaves && row.Must_Have) {
+            decision = "Behalten (Schutz: Kernmarkt)";
+        } else if (protectFuture && row.Status === "Zukunft") {
+            decision = "Behalten (Schutz: R&D Zukunft)";
+        } else if (killPhasedOut && row.Status === "Auslauf") {
+            decision = "Streichen (Auslaufmodell)";
+        } else if (row.Marge_Pct < minMargin || row.Absatz_Stk < minMoq) {
+            decision = "Streichen (Finanz-Ziel verfehlt)";
+        } else if (row.Ruestkosten_Index > maxSetupIndex) {
+            decision = "Modularisieren (Rüstkosten zu hoch)";
+        }
+        return { ...row, KI_Empfehlung: decision };
+    });
+
+    // 3. KPIs berechnen
+    const totalRev = evaluated.reduce((sum, r) => sum + r.Umsatz_TEUR, 0);
+    const keptItems = evaluated.filter(r => !r.KI_Empfehlung.startsWith("Streichen"));
+    const keptRev = keptItems.reduce((sum, r) => sum + r.Umsatz_TEUR, 0);
+    const revCoverage = totalRev > 0 ? ((keptRev / totalRev) * 100).toFixed(1) : 0;
+    const complexityRed = evaluated.length > 0 ? (((evaluated.length - keptItems.length) / evaluated.length) * 100).toFixed(1) : 0;
+    const avgMargin = keptItems.length > 0 ? (keptItems.reduce((sum, r) => sum + r.Marge_Pct, 0) / keptItems.length).toFixed(1) : 0;
+
+    document.getElementById('kpi_variants').innerText = `${keptItems.length} / ${evaluated.length}`;
+    document.getElementById('kpi_complexity').innerText = `-${complexityRed}% Komplexität`;
+    document.getElementById('kpi_coverage').innerText = `${revCoverage}%`;
+    
+    const covDiff = (revCoverage - minMarketCov).toFixed(1);
+    const covEl = document.getElementById('kpi_coverage_diff');
+    covEl.innerText = `${covDiff >= 0 ? '+' : ''}${covDiff}% vs. Ziel (${minMarketCov}%)`;
+    covEl.className = `text-xs font-medium mt-1 ${covDiff >= 0 ? 'text-emerald-600' : 'text-red-600 font-bold'}`;
+
+    document.getElementById('kpi_margin').innerText = `${avgMargin}%`;
+    document.getElementById('kpi_margin_target').innerText = `Ziel: >${minMargin}%`;
+    document.getElementById('kpi_decoupling').innerText = decouplingPoint.split(" ")[0];
+
+    // 4. Bubble Chart zeichnen
+    const colorMap = {
+        "Behalten (Optimal)": "#10b981",
+        "Behalten (Schutz: Kernmarkt)": "#3b82f6",
+        "Behalten (Schutz: R&D Zukunft)": "#8b5cf6",
+        "Modularisieren (Rüstkosten zu hoch)": "#f59e0b",
+        "Streichen (Finanz-Ziel verfehlt)": "#ef4444",
+        "Streichen (Auslaufmodell)": "#991b1b"
+    };
+
+    const categories = [...new Set(evaluated.map(r => r.KI_Empfehlung))];
+    const traces = categories.map(cat => {
+        const filtered = evaluated.filter(r => r.KI_Empfehlung === cat);
+        return {
+            x: filtered.map(r => r.Absatz_Stk),
+            y: filtered.map(r => r.Marge_Pct),
+            mode: 'markers',
+            name: cat,
+            text: filtered.map(r => `<b>${r.Variante}</b><br>Umsatz: ${r.Umsatz_TEUR} TEUR<br>Rüst-Index: ${r.Ruestkosten_Index}`),
+            marker: {
+                size: filtered.map(r => Math.max(12, Math.sqrt(r.Umsatz_TEUR) * 1.1)),
+                color: colorMap[cat] || '#64748b',
+                opacity: 0.85,
+                line: { width: 1, color: '#fff' }
+            }
+        };
+    });
+
+    const maxAbsatz = Math.max(...evaluated.map(r => r.Absatz_Stk), 2000) * 1.1;
+    const maxMarge = Math.max(...evaluated.map(r => r.Marge_Pct), 40) * 1.1;
+
+    const layoutBubble = {
+        margin: { t: 10, r: 10, b: 40, l: 45 },
+        xaxis: { title: 'Absatzmenge (Stück/Jahr)', range: [0, maxAbsatz] },
+        yaxis: { title: 'Marge / DB (%)', range: [0, maxMarge] },
+        legend: { orientation: 'h', y: -0.25, font: { size: 10 } },
+        shapes: [
+            { type: 'line', x0: 0, x1: maxAbsatz, y0: minMargin, y1: minMargin, line: { color: '#ef4444', width: 1.5, dash: 'dash' } },
+            { type: 'line', x0: minMoq, x1: minMoq, y0: 0, y1: maxMarge, line: { color: '#f59e0b', width: 1.5, dash: 'dash' } }
+        ]
+    };
+    Plotly.newPlot('bubbleChart', traces, layoutBubble, { responsive: true, displayModeBar: false });
+
+    // 5. Radar Chart zeichnen
+    const radarValues = [
+        minMarketCov,
+        (10 - maxSetupIndex) * 10,
+        Math.min(minMargin * 2.5, 100),
+        minCopRate,
+        protectFuture ? 90 : 30
+    ];
+    const radarLabels = ['Marktabdeckung', 'Fertigungs-Standard', 'Margen-Strenge', 'Gleichteile-Fokus', 'Innovations-Schutz'];
+
+    const traceRadar = [{
+        type: 'scatterpolar',
+        r: [...radarValues, radarValues[0]],
+        theta: [...radarLabels, radarLabels[0]],
+        fill: 'toself',
+        fillcolor: 'rgba(37, 99, 235, 0.2)',
+        line: { color: '#2563eb', width: 2 }
+    }];
+    const layoutRadar = {
+        margin: { t: 25, r: 35, b: 25, l: 35 },
+        polar: { radialaxis: { visible: true, range: [0, 100] } },
+        showlegend: false
+    };
+    Plotly.newPlot('radarChart', traceRadar, layoutRadar, { responsive: true, displayModeBar: false });
+
+    // 6. Prompt generieren
+    const promptText = `# SYSTEM-PROMPT: KI-AGENT FÜR STRATEGISCHES VARIANTENMANAGEMENT
+Du agierst als autonomer Portfolio-Optimierer. Bewerte die angehängten ERP-/Stücklistendaten strikt nach folgenden 5 Unternehmens-Leitplanken:
+
+1. MARKT- & VERTRIEBSSTRATEGIE:
+- Sichere mindestens ${minMarketCov}% des historischen Gesamtumsatzes ab (aktuell durch Vorfilter erreicht: ${revCoverage}%).
+- Strategische Märkte & K.O.-Merkmale schützen: ${protectMustHaves ? 'JA (Unantastbar)' : 'NEIN (Streichen erlaubt)'}.
+
+2. PRODUKTIONS- & KOMPLEXITÄTSSTRATEGIE:
+- Kundenentkopplungspunkt: ${decouplingPoint}. Varianz darf erst NACH diesem Punkt in der Stückliste (BOM) entstehen.
+- Maximal tolerierter Rüstkosten-Index in der Fertigungslinie: ${maxSetupIndex}/10. Alle Varianten darüber müssen modularisiert oder gestrichen werden.
+- Über-Spezifikation (Einbau von Max-Modulen zur Senkung der Teilevielfalt): ${overSpecAllowed ? 'Erwünscht' : 'Verboten (Einzelteilkosten minimieren)'}.
+
+3. FINANZ- & MARGENSTRATEGIE:
+- Harte Untergrenzen: Mindestmarge = ${minMargin}%, Mindestabsatz (MOQ) = ${minMoq} Stück/Jahr.
+
+4. EINKAUF & SUPPLY CHAIN:
+- Ziel-Gleichteilequote (Carry-Over-Parts) über das Gesamtportfolio: ${minCopRate}%.
+- Lieferanten-Fokus: ${sourcingStrat}.
+
+5. R&D & LEBENSZYKLUS:
+- Zukunftstechnologien unter Welpenschutz stellen: ${protectFuture ? 'JA' : 'NEIN'}.
+- Auslaufmodelle sofort eliminieren: ${killPhasedOut ? 'JA' : 'NEIN'}.
+
+DATENBASIS (Vorab-Evaluation aus ERP/PLM):
+${JSON.stringify(evaluated, null, 2)}
+
+AUFGABE:
+Erstelle (A) einen konkreten Maßnahmenplan für die technischen Baukästen (welche Stücklisten-Module verschmolzen werden), 
+(B) eine Berechnung des Skaleneffekts in der Fertigung und (C) eine Migrations-Empfehlung für Kunden gestrichener Varianten.`;
+
+    document.getElementById('promptOutput').innerText = promptText;
+
+    // 7. Simulierte KI-Antwort aktualisieren
+    const dropped = evaluated.filter(r => r.KI_Empfehlung.startsWith("Streichen")).map(r => r.Variante);
+    const modularize = evaluated.filter(r => r.KI_Empfehlung.startsWith("Modularisieren")).map(r => r.Variante);
+
+    document.getElementById('aiSimulationOutput').innerHTML = `
+        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-900 mb-4">
+            <strong>Status der KI-Simulation:</strong> Analyse auf Basis Ihrer 5 strategischen Dimensionen erfolgreich berechnet.
+        </div>
+        <h4 class="font-bold text-slate-900 text-base">1. Bereinigung des Portfolios (Streichliste)</h4>
+        <p class="text-slate-700"><strong>Zu eliminierende Varianten (${dropped.length}):</strong> <code class="bg-slate-100 px-1.5 py-0.5 rounded text-red-600">${dropped.length ? dropped.join(', ') : 'Keine (Filter sehr tolerant eingestellt)'}</code></p>
+        <p class="text-slate-600 text-xs">Begründung & Migration: Diese Varianten unterschreiten die geforderte Mindestmarge von <strong>${minMargin}%</strong> bzw. die MOQ von <strong>${minMoq} Stück</strong> oder sind als Auslaufmodell markiert. Kunden dieser Varianten können zu ca. 85% ohne Wettbewerbsnachteil auf die Standard-Bestseller umgeleitet werden.</p>
+
+        <h4 class="font-bold text-slate-900 text-base mt-4">2. Technische Modularisierung (Fertigungs-Optimum)</h4>
+        <p class="text-slate-700"><strong>Umbau-Kandidaten wegen Rüstkosten (Index > ${maxSetupIndex}):</strong> <code class="bg-slate-100 px-1.5 py-0.5 rounded text-amber-600">${modularize.length ? modularize.join(', ') : 'Keine'}</code></p>
+        <p class="text-slate-600 text-xs">Stücklisten-Eingriff (<strong>${decouplingPoint}</strong>): Da Über-Spezifikation <strong>${overSpecAllowed ? 'aktiviert' : 'deaktiviert'}</strong> ist, empfiehlt der Agent, Kabelbaum und Steuerungseinheit der verbleibenden Varianten zu einem Standard-Modul zu verschmelzen. Das senkt die Rüstzeiten um ca. 22% und hebt die Gleichteilequote in Richtung des Ziels von <strong>${minCopRate}%</strong> (${sourcingStrat}).</p>
+
+        <h4 class="font-bold text-slate-900 text-base mt-4">3. Strategischer Zielabgleich</h4>
+        <p class="text-slate-700">Die geforderte Umsatzabdeckung von <strong>${minMarketCov}%</strong> wird mit <strong>${revCoverage}%</strong> ${revCoverage >= minMarketCov ? '<span class="text-emerald-600 font-bold">✅ sicher erreicht</span>.' : '<span class="text-red-600 font-bold">⚠️ verfehlt! (Tipp: Mindestmarge oder MOQ links leicht senken)</span>'}</p>
+    `;
+
+    // 8. Tabelle füllen
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = evaluated.map(r => {
+        let badgeColor = "bg-emerald-100 text-emerald-800";
+        if (r.KI_Empfehlung.startsWith("Streichen")) badgeColor = "bg-red-100 text-red-800";
+        else if (r.KI_Empfehlung.startsWith("Modularisieren")) badgeColor = "bg-amber-100 text-amber-800";
+        else if (r.KI_Empfehlung.includes("Schutz")) badgeColor = "bg-blue-100 text-blue-800";
+
+        return `<tr class="hover:bg-slate-50">
+            <td class="p-2.5 font-medium text-slate-900">${r.Variante}</td>
+            <td class="p-2.5">${r.Umsatz_TEUR}</td>
+            <td class="p-2.5">${r.Marge_Pct}%</td>
+            <td class="p-2.5">${r.Absatz_Stk}</td>
+            <td class="p-2.5">${r.Ruestkosten_Index}/10</td>
+            <td class="p-2.5">${r.Status}</td>
+            <td class="p-2.5">${r.Must_Have ? '✅ Ja' : 'Nein'}</td>
+            <td class="p-2.5"><span class="px-2 py-1 rounded-full text-[11px] font-semibold ${badgeColor}">${r.KI_Empfehlung}</span></td>
+        </tr>`;
+    }).join('');
+}
+
+function switchTab(tabId) {
+    ['tab-prompt', 'tab-ai', 'tab-table'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+        document.getElementById('btn-' + id).classList.remove('active');
+    });
+    document.getElementById(tabId).classList.remove('hidden');
+    document.getElementById('btn-' + tabId).classList.add('active');
+}
+
+function copyPrompt() {
+    const text = document.getElementById('promptOutput').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.innerText = "✅ Kopiert!";
+        setTimeout(() => btn.innerText = "📋 Prompt kopieren", 2000);
+    });
+}
+
+// Initialer Start
+window.onload = updateDashboard;
+</script>
+</body>
+</html>

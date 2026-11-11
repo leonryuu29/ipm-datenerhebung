@@ -1,6 +1,6 @@
 # Projektstand – Teilprojekt Datenerhebung
 
-**Stand:** 10.11.2026  
+**Stand:** 11.11.2026  
 **Status-Labels:** `BESCHLOSSEN` (im Team oder mit Betreuer festgelegt) · `VORSCHLAG` (noch abzustimmen) · `OFFEN`
 
 ## 1. Auftrag (Thema 6, Steffen Feld)
@@ -22,6 +22,10 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 | 09.11. | Rollen: Yannick (Projektleitung, Umsetzung), Linus (Umsetzung), Lukas + David (Konzeptentwicklung), Mark (Controlling/Wirtschaftlichkeit), Yu + Jonas (Datenerhebung). Marketing und Fertigungsaufwand entfallen. | Teammeeting; IPM Gruppezuteilung 6.xlsx | BESCHLOSSEN |
 | 09.11. | Testphase mit synthetischen Daten; Struktur an realen ERP-Exporten orientiert, damit reale Daten später austauschbar sind. | Abstimmung Yu | BESCHLOSSEN |
 | 10.11. | Produktfall: fiktiver Kartonagenhersteller mit 3–4 Strategieprofilen. | Aufgabenliste Datenerhebung | VORSCHLAG |
+| 11.11. | Arbeitsteilung Datenerhebung: Jonas fachlich (Produktfall, Strategieprofile, Annahmen, Plausibilität), Yu technisch (Schema, Generator, Validierung, Übergabe). | Zusage Jonas per Chat | BESCHLOSSEN |
+| 11.11. | Jonas trägt bis zum Treffen am 13.11. etwa 10–15 Kartonvarianten und die vier Strategieprofile in die Excel-Vorlage ein; am 13.11. wird die Tabelle in den Prototyp geladen. | Chat Yu/Jonas | BESCHLOSSEN |
+| 11.11. | Feldliste und JSON-Schema v0.1: Stufe 1 = Variantentabelle (sieben Pflichtspalten des Prototyps plus optionale Felder) und Strategieprofile (elf Regler des Prototyps); Stufe 2 = Entwurf der weiteren ERP-Blöcke. | `reports/FELDLISTE_v0.1_DE.pdf`, `schema/` | VORSCHLAG |
+| 11.11. | Übergabe an den Prototyp nur über den Konverter (`generator/excel_zu_prototyp.py`), nicht als direkt aus Excel gespeicherte CSV. | Testprotokoll 11.11., Befund B1 | VORSCHLAG |
 
 ## 3. Termine
 
@@ -37,19 +41,34 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 | 17.12. | Abschlusspräsentation | alle |
 | 15.01.2027 | Abgabe Hausarbeit (ca. 8 Seiten pro Person) | alle |
 
-## 4. Offene Punkte
+## 4. Stand der Arbeitspakete
+
+| AP | Stand 11.11. |
+| --- | --- |
+| D1 Mindestfelder | Entwurf liegt vor (Feldliste v0.1); Abstimmung mit Konzept und Umsetzung am 13.11. |
+| D2 Produktfall und Strategieprofile | Jonas arbeitet mit der Excel-Vorlage v0.1; Profile sind als technischer Vorschlag vorbefüllt. |
+| D3 Datenmodell und JSON-Schema | v0.1 erzeugt und getestet; v1 nach der Abstimmung, Ende KW47. |
+| D7/D10 Validierung, Integration | Prüfregeln und Konverter vorhanden; erster Lauf im Prototyp bestanden (70 Tests, Testprotokoll 11.11.). |
+| D4, D5, D6, D8, D9, D11 | noch nicht begonnen. |
+
+## 5. Offene Punkte
 
 1. Produktfall Kartonagen im Team bestätigen.
-2. JSON oder YAML mit der Umsetzung festlegen.
-3. Mindestfelder aus Sicht der Konzeptentwicklung erhalten.
-4. Arbeitsteilung mit Jonas bestätigen (am 09.11. nicht anwesend).
-5. Klären, ob später reale oder anonymisierte Daten von Steffen Feld möglich sind.
-6. Arbeitszeiten laufend an Mark melden (Projektkosten 100 €/h laut Steffen Feld).
+2. Übergabeformat mit der Umsetzung festlegen: JSON oder CSV. Empfehlung nach dem Test: JSON (Befund B3).
+3. Mindestfelder aus Sicht der Konzeptentwicklung erhalten; Zusatzfelder für den Prompt klären.
+4. Statuswerte festlegen (Standard, Sonderlocke, Auslauf, Zukunft); Märkte als eigenes Feld (Befund B6).
+5. Regler Mindestabsatz im Prototyp reicht nur bis 1.500 Stück, Kartonmengen liegen weit darüber (Befund B4).
+6. Umgang mit Großkunden-Varianten: Regel, Pflichtfeld oder nur Prompt (Befund B5).
+7. Ein Datensatz je Strategie oder ein gemeinsamer Datensatz mit vier Profilen.
+8. Klären, ob später reale oder anonymisierte Daten von Steffen Feld möglich sind.
+9. Arbeitszeiten laufend an Mark melden (Projektkosten 100 €/h laut Steffen Feld).
 
-## 5. Quellen
+## 6. Quellen
 
 - Aufgabenstellung IPM WiSe 2026/27 (Prof. Fahrig), Folie 15 – Thema 6.
 - Transkript Gespräch mit Steffen Feld, 05.11.2026.
 - Transkript Teammeeting, 09.11.2026 („11.9分工&计划&实操细节“).
 - IPM Gruppezuteilung 6.xlsx (Share-Ordner, Stand 09.11.2026).
 - Team-Repo YanOkoli/hsbi-ipm: PROJEKTKONTEXT.md, Pflichtenheft-Entwurf v0.3, PSP-Entwurf.
+- Prototyp der Umsetzung `ki_wrapper_variantenmanagement.html`, Stand 10.11.2026 (Share-Ordner); Kopie für Tests in `tests/prototyp/`.
+- Testprotokoll `tests/TESTPROTOKOLL_2026-11-11.md`.

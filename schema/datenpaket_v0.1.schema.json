@@ -1,0 +1,705 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/leonryuu29/ipm-datenerhebung/schema/datenpaket_v0.1.schema.json",
+  "title": "Datenpaket Variantenmanagement v0.1 (Entwurf)",
+  "description": "Ein Datenpaket je Unternehmen und Strategieprofil. Stufe 1: meta, strategieprofil, varianten. Stufe 2 (Entwurf, noch abzustimmen): übrige Blöcke.",
+  "type": "object",
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "0.1"
+        },
+        "kennzeichnung": {
+          "const": "SYNTHETIC",
+          "description": "Alle erfundenen Daten sind als SYNTHETIC gekennzeichnet."
+        },
+        "erzeugt_am": {
+          "type": "string",
+          "format": "date"
+        },
+        "seed": {
+          "type": "integer",
+          "description": "Startwert des Generators für die Reproduzierbarkeit."
+        },
+        "beschreibung": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "kennzeichnung",
+        "erzeugt_am"
+      ],
+      "additionalProperties": false
+    },
+    "unternehmen": {
+      "type": "object",
+      "properties": {
+        "Unternehmen_ID": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+          "minLength": 1,
+          "description": "Kennung des Unternehmens."
+        },
+        "Name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name des fiktiven Unternehmens."
+        },
+        "Branche": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Branche."
+        },
+        "Umsatz_Mio_EUR": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Jahresumsatz. Einheit: Mio. EUR."
+        },
+        "Mitarbeitende": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Anzahl Mitarbeitende."
+        },
+        "Standorte": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Anzahl Produktionsstandorte."
+        },
+        "Strategie": {
+          "type": "string",
+          "enum": [
+            "Massenproduzent",
+            "Kostenführer",
+            "Innovationsführer",
+            "Nischenanbieter"
+          ],
+          "description": "Strategische Ausrichtung."
+        },
+        "Fertigungsart": {
+          "type": "string",
+          "enum": [
+            "ATO",
+            "MTS",
+            "ETO"
+          ],
+          "description": "Vorherrschende Fertigungsart."
+        },
+        "Kernmaerkte": {
+          "type": "string",
+          "description": "Wichtigste Märkte oder Kundensegmente, durch | getrennt."
+        }
+      },
+      "required": [
+        "Unternehmen_ID",
+        "Name",
+        "Branche",
+        "Umsatz_Mio_EUR",
+        "Mitarbeitende",
+        "Strategie",
+        "Fertigungsart"
+      ],
+      "additionalProperties": false
+    },
+    "strategieprofil": {
+      "type": "object",
+      "properties": {
+        "Strategie": {
+          "type": "string",
+          "enum": [
+            "Massenproduzent",
+            "Kostenführer",
+            "Innovationsführer",
+            "Nischenanbieter"
+          ],
+          "description": "Strategische Ausrichtung des Unternehmens."
+        },
+        "Beschreibung": {
+          "type": "string",
+          "description": "Kurzbeschreibung des Profils in einem Satz."
+        },
+        "Min_Umsatzabdeckung_Pct": {
+          "type": "integer",
+          "minimum": 50,
+          "maximum": 100,
+          "description": "Anteil des bisherigen Umsatzes, der mindestens erhalten bleiben muss. Einheit: %."
+        },
+        "Kernmaerkte_schuetzen": {
+          "type": "boolean",
+          "description": "Must-Have-Varianten bleiben unabhängig von den Kennzahlen erhalten."
+        },
+        "Entkopplungspunkt": {
+          "type": "string",
+          "enum": [
+            "ATO",
+            "MTS",
+            "ETO"
+          ],
+          "description": "Kundenentkopplungspunkt: ATO = Assemble-to-Order, MTS = Make-to-Stock, ETO = Engineer-to-Order."
+        },
+        "Max_Ruestkosten_Index": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Varianten über diesem Rüstkosten-Index sollen modularisiert werden. Einheit: 1-10."
+        },
+        "Ueberspezifikation_erlaubt": {
+          "type": "boolean",
+          "description": "Einheitsmodule dürfen verwendet werden, auch wenn sie für einzelne Varianten überdimensioniert sind."
+        },
+        "Min_Marge_Pct": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 40,
+          "description": "Mindestmarge; Varianten darunter verfehlen das Finanzziel. Einheit: %."
+        },
+        "Min_Absatz_Stk": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Mindestabsatz pro Jahr. Hinweis: Der Regler im Prototyp reicht derzeit nur von 0 bis 1500 in 50er-Schritten. Einheit: Stück / Jahr."
+        },
+        "Ziel_Gleichteilequote_Pct": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 90,
+          "description": "Angestrebter Anteil gleicher Teile über das Portfolio. Einheit: %."
+        },
+        "Sourcing": {
+          "type": "string",
+          "enum": [
+            "Single",
+            "Dual"
+          ],
+          "description": "Beschaffungsstrategie."
+        },
+        "Zukunft_schuetzen": {
+          "type": "boolean",
+          "description": "Varianten mit Status 'Zukunft' bleiben erhalten."
+        },
+        "Auslauf_streichen": {
+          "type": "boolean",
+          "description": "Varianten mit Status 'Auslauf' werden gestrichen."
+        }
+      },
+      "required": [
+        "Strategie",
+        "Min_Umsatzabdeckung_Pct",
+        "Kernmaerkte_schuetzen",
+        "Entkopplungspunkt",
+        "Max_Ruestkosten_Index",
+        "Ueberspezifikation_erlaubt",
+        "Min_Marge_Pct",
+        "Min_Absatz_Stk",
+        "Ziel_Gleichteilequote_Pct",
+        "Sourcing",
+        "Zukunft_schuetzen",
+        "Auslauf_streichen"
+      ],
+      "additionalProperties": false
+    },
+    "varianten": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "Variante": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Eindeutige Kennung der Variante. Nur Buchstaben, Ziffern, _ . - (kein Komma, kein Semikolon, kein Leerzeichen)."
+          },
+          "Umsatz_TEUR": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Jahresumsatz der Variante. Einheit: Tsd. EUR / Jahr."
+          },
+          "Marge_Pct": {
+            "type": "number",
+            "minimum": -100,
+            "maximum": 100,
+            "description": "Deckungsbeitrag in Prozent vom Umsatz. Einheit: %."
+          },
+          "Absatz_Stk": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Verkaufte Menge pro Jahr. Einheit: Stück / Jahr."
+          },
+          "Ruestkosten_Index": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "Rüstaufwand der Variante relativ zum Standard: 1 = sehr gering, 10 = sehr hoch. Einheit: 1-10."
+          },
+          "Status": {
+            "type": "string",
+            "enum": [
+              "Standard",
+              "Sonderlocke",
+              "Auslauf",
+              "Zukunft"
+            ],
+            "description": "Lebenszyklus-Status. Der Prototyp wertet 'Auslauf' und 'Zukunft' gesondert aus."
+          },
+          "Must_Have": {
+            "type": "boolean",
+            "description": "Variante ist für einen Kernmarkt oder ein K.O.-Kriterium unverzichtbar und wird vom Prototyp geschützt."
+          },
+          "Bezeichnung": {
+            "type": "string",
+            "description": "Lesbarer Name der Variante."
+          },
+          "FEFCO_Typ": {
+            "type": "string",
+            "pattern": "^\\d{4}$",
+            "description": "Konstruktionstyp nach FEFCO-Code (vier Ziffern)."
+          },
+          "Laenge_mm": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Innenmaß Länge. Einheit: mm."
+          },
+          "Breite_mm": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Innenmaß Breite. Einheit: mm."
+          },
+          "Hoehe_mm": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Innenmaß Höhe. Einheit: mm."
+          },
+          "Wellenart": {
+            "type": "string",
+            "enum": [
+              "E",
+              "B",
+              "C",
+              "EB",
+              "BC"
+            ],
+            "description": "Wellpappenqualität."
+          },
+          "Druck": {
+            "type": "string",
+            "enum": [
+              "ohne",
+              "1-farbig",
+              "2-farbig",
+              "4-farbig"
+            ],
+            "description": "Bedruckung."
+          },
+          "Preis_EUR": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Durchschnittlicher Verkaufspreis je Stück. Dient der Plausibilitätsprüfung: Umsatz_TEUR ≈ Absatz_Stk × Preis_EUR / 1000. Einheit: EUR / Stück."
+          },
+          "Anzahl_Kunden": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Anzahl der Kunden, die die Variante im Jahr gekauft haben."
+          },
+          "Hauptkunde_Anteil_Pct": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Anteil des größten Kunden am Umsatz der Variante. Hoher Wert = Abhängigkeit von einem Kunden. Einheit: %."
+          },
+          "Variantenbildung_Schritt": {
+            "type": "string",
+            "enum": [
+              "Wellpappe",
+              "Zuschnitt",
+              "Druck",
+              "Stanzen",
+              "Kleben",
+              "Konfektionierung"
+            ],
+            "description": "Prozessschritt, in dem die Variante entsteht (Variantenbildungspunkt). Später = besser."
+          },
+          "Bemerkung": {
+            "type": "string",
+            "description": "Freitext, z. B. Sonderfall oder Annahme. Kein Komma, kein Semikolon."
+          }
+        },
+        "required": [
+          "Variante",
+          "Umsatz_TEUR",
+          "Marge_Pct",
+          "Absatz_Stk",
+          "Ruestkosten_Index",
+          "Status",
+          "Must_Have"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "stueckliste": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Variante": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Verweis auf die Variante."
+          },
+          "Position": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Positionsnummer."
+          },
+          "Komponente_ID": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Kennung der Komponente."
+          },
+          "Komponente": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Bezeichnung der Komponente."
+          },
+          "Menge": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Einsatzmenge je Stück."
+          },
+          "Einheit": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Mengeneinheit."
+          },
+          "Gleichteil": {
+            "type": "boolean",
+            "description": "Komponente wird in mehreren Varianten verwendet."
+          },
+          "Kosten_EUR_je_Einheit": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Einstandspreis je Einheit. Einheit: EUR."
+          }
+        },
+        "required": [
+          "Variante",
+          "Position",
+          "Komponente_ID",
+          "Komponente",
+          "Menge",
+          "Einheit",
+          "Gleichteil"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "arbeitsplan": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Variante": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Verweis auf die Variante."
+          },
+          "Schritt_Nr": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Reihenfolge des Schritts."
+          },
+          "Prozessschritt": {
+            "type": "string",
+            "enum": [
+              "Wellpappe",
+              "Zuschnitt",
+              "Druck",
+              "Stanzen",
+              "Kleben",
+              "Konfektionierung"
+            ],
+            "description": "Art des Prozessschritts."
+          },
+          "Arbeitsplatz": {
+            "type": "string",
+            "description": "Maschine oder Arbeitsplatz."
+          },
+          "Ruestzeit_min": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Rüstzeit je Auftrag. Einheit: min."
+          },
+          "Stueckzeit_s": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Bearbeitungszeit je Stück. Einheit: s."
+          },
+          "Variantenbildend": {
+            "type": "boolean",
+            "description": "In diesem Schritt entsteht die Variante (Variantenbildungspunkt)."
+          }
+        },
+        "required": [
+          "Variante",
+          "Schritt_Nr",
+          "Prozessschritt",
+          "Ruestzeit_min",
+          "Stueckzeit_s",
+          "Variantenbildend"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "auftraege": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Auftrag_ID": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Kennung des Auftrags."
+          },
+          "Datum": {
+            "type": "string",
+            "format": "date",
+            "description": "Auftragsdatum."
+          },
+          "Kunde_ID": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Verweis auf den Kunden."
+          },
+          "Variante": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Verweis auf die Variante."
+          },
+          "Menge_Stk": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Bestellte Menge. Einheit: Stück."
+          },
+          "Preis_EUR_je_Stk": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Verkaufspreis je Stück. Einheit: EUR."
+          }
+        },
+        "required": [
+          "Auftrag_ID",
+          "Datum",
+          "Kunde_ID",
+          "Variante",
+          "Menge_Stk",
+          "Preis_EUR_je_Stk"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "kosten": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Variante": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Verweis auf die Variante."
+          },
+          "Materialkosten_EUR_je_Stk": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Materialkosten je Stück. Einheit: EUR."
+          },
+          "Fertigungskosten_EUR_je_Stk": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Variable Fertigungskosten je Stück. Einheit: EUR."
+          },
+          "Ruestkosten_EUR_je_Auftrag": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Rüstkosten je Fertigungsauftrag. Einheit: EUR."
+          },
+          "Lagerkosten_EUR_je_Jahr": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Lagerhaltungskosten pro Jahr. Einheit: EUR."
+          },
+          "Komplexitaetskosten_EUR_je_Jahr": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Variantenabhängige Gemeinkosten (Stammdaten, Planung, Werkzeuge). Einheit: EUR."
+          }
+        },
+        "required": [
+          "Variante",
+          "Materialkosten_EUR_je_Stk",
+          "Fertigungskosten_EUR_je_Stk",
+          "Ruestkosten_EUR_je_Auftrag"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "kunden": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Kunde_ID": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Kennung des Kunden."
+          },
+          "Segment": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Kundensegment."
+          },
+          "Schluesselkunde": {
+            "type": "boolean",
+            "description": "Strategisch wichtiger Kunde."
+          },
+          "Kernmarkt": {
+            "type": "boolean",
+            "description": "Kunde gehört zu einem Kernmarkt."
+          }
+        },
+        "required": [
+          "Kunde_ID",
+          "Segment",
+          "Schluesselkunde",
+          "Kernmarkt"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "kundenanforderungen": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Kunde_ID": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "minLength": 1,
+            "description": "Verweis auf den Kunden."
+          },
+          "Merkmal": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Produktmerkmal."
+          },
+          "Auspraegung": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Gewünschte Ausprägung."
+          },
+          "Prioritaet": {
+            "type": "string",
+            "enum": [
+              "Muss",
+              "Soll",
+              "Kann"
+            ],
+            "description": "Verbindlichkeit der Anforderung."
+          },
+          "Haeufigkeit_pro_Jahr": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Wie oft die Anforderung im Jahr auftritt."
+          }
+        },
+        "required": [
+          "Kunde_ID",
+          "Merkmal",
+          "Auspraegung",
+          "Prioritaet"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "wettbewerb": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Wettbewerber": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Name des Anbieters."
+          },
+          "Produkt": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Produktbezeichnung laut Katalog."
+          },
+          "FEFCO_Typ": {
+            "type": "string",
+            "pattern": "^\\d{4}$",
+            "description": "Konstruktionstyp, falls angegeben."
+          },
+          "Laenge_mm": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Innenmaß Länge. Einheit: mm."
+          },
+          "Breite_mm": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Innenmaß Breite. Einheit: mm."
+          },
+          "Hoehe_mm": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Innenmaß Höhe. Einheit: mm."
+          },
+          "Wellenart": {
+            "type": "string",
+            "enum": [
+              "E",
+              "B",
+              "C",
+              "EB",
+              "BC"
+            ],
+            "description": "Wellpappenqualität, falls angegeben."
+          },
+          "Quelle_URL": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Adresse der Fundstelle."
+          },
+          "Abrufdatum": {
+            "type": "string",
+            "format": "date",
+            "description": "Datum des Abrufs."
+          }
+        },
+        "required": [
+          "Wettbewerber",
+          "Produkt",
+          "Quelle_URL",
+          "Abrufdatum"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "meta",
+    "strategieprofil",
+    "varianten"
+  ],
+  "additionalProperties": false
+}

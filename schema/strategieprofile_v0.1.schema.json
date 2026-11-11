@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/leonryuu29/ipm-datenerhebung/schema/strategieprofile_v0.1.schema.json",
+  "title": "Strategieprofile v0.1",
+  "description": "Ein Profil je Unternehmensstrategie. Die Felder entsprechen den Reglern des Prototyps, sodass jedes Profil dort direkt eingestellt werden kann.",
+  "type": "array",
+  "minItems": 1,
+  "maxItems": 4,
+  "items": {
+    "type": "object",
+    "properties": {
+      "Strategie": {
+        "type": "string",
+        "enum": [
+          "Massenproduzent",
+          "Kostenführer",
+          "Innovationsführer",
+          "Nischenanbieter"
+        ],
+        "description": "Strategische Ausrichtung des Unternehmens."
+      },
+      "Beschreibung": {
+        "type": "string",
+        "description": "Kurzbeschreibung des Profils in einem Satz."
+      },
+      "Min_Umsatzabdeckung_Pct": {
+        "type": "integer",
+        "minimum": 50,
+        "maximum": 100,
+        "description": "Anteil des bisherigen Umsatzes, der mindestens erhalten bleiben muss. Einheit: %."
+      },
+      "Kernmaerkte_schuetzen": {
+        "type": "boolean",
+        "description": "Must-Have-Varianten bleiben unabhängig von den Kennzahlen erhalten."
+      },
+      "Entkopplungspunkt": {
+        "type": "string",
+        "enum": [
+          "ATO",
+          "MTS",
+          "ETO"
+        ],
+        "description": "Kundenentkopplungspunkt: ATO = Assemble-to-Order, MTS = Make-to-Stock, ETO = Engineer-to-Order."
+      },
+      "Max_Ruestkosten_Index": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10,
+        "description": "Varianten über diesem Rüstkosten-Index sollen modularisiert werden. Einheit: 1-10."
+      },
+      "Ueberspezifikation_erlaubt": {
+        "type": "boolean",
+        "description": "Einheitsmodule dürfen verwendet werden, auch wenn sie für einzelne Varianten überdimensioniert sind."
+      },
+      "Min_Marge_Pct": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 40,
+        "description": "Mindestmarge; Varianten darunter verfehlen das Finanzziel. Einheit: %."
+      },
+      "Min_Absatz_Stk": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Mindestabsatz pro Jahr. Hinweis: Der Regler im Prototyp reicht derzeit nur von 0 bis 1500 in 50er-Schritten. Einheit: Stück / Jahr."
+      },
+      "Ziel_Gleichteilequote_Pct": {
+        "type": "integer",
+        "minimum": 10,
+        "maximum": 90,
+        "description": "Angestrebter Anteil gleicher Teile über das Portfolio. Einheit: %."
+      },
+      "Sourcing": {
+        "type": "string",
+        "enum": [
+          "Single",
+          "Dual"
+        ],
+        "description": "Beschaffungsstrategie."
+      },
+      "Zukunft_schuetzen": {
+        "type": "boolean",
+        "description": "Varianten mit Status 'Zukunft' bleiben erhalten."
+      },
+      "Auslauf_streichen": {
+        "type": "boolean",
+        "description": "Varianten mit Status 'Auslauf' werden gestrichen."
+      }
+    },
+    "required": [
+      "Strategie",
+      "Min_Umsatzabdeckung_Pct",
+      "Kernmaerkte_schuetzen",
+      "Entkopplungspunkt",
+      "Max_Ruestkosten_Index",
+      "Ueberspezifikation_erlaubt",
+      "Min_Marge_Pct",
+      "Min_Absatz_Stk",
+      "Ziel_Gleichteilequote_Pct",
+      "Sourcing",
+      "Zukunft_schuetzen",
+      "Auslauf_streichen"
+    ],
+    "additionalProperties": false
+  }
+}

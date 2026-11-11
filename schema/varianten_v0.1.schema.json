@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/leonryuu29/ipm-datenerhebung/schema/varianten_v0.1.schema.json",
+  "title": "Varianten (Portfolio-Tabelle) v0.1",
+  "description": "Eine Zeile je Produktvariante. Die ersten sieben Felder liest der Prototyp direkt; die Erweiterungsfelder werden als Zusatzinformation in den Prompt übernommen.",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "properties": {
+      "Variante": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+        "minLength": 1,
+        "description": "Eindeutige Kennung der Variante. Nur Buchstaben, Ziffern, _ . - (kein Komma, kein Semikolon, kein Leerzeichen)."
+      },
+      "Umsatz_TEUR": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Jahresumsatz der Variante. Einheit: Tsd. EUR / Jahr."
+      },
+      "Marge_Pct": {
+        "type": "number",
+        "minimum": -100,
+        "maximum": 100,
+        "description": "Deckungsbeitrag in Prozent vom Umsatz. Einheit: %."
+      },
+      "Absatz_Stk": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Verkaufte Menge pro Jahr. Einheit: Stück / Jahr."
+      },
+      "Ruestkosten_Index": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10,
+        "description": "Rüstaufwand der Variante relativ zum Standard: 1 = sehr gering, 10 = sehr hoch. Einheit: 1-10."
+      },
+      "Status": {
+        "type": "string",
+        "enum": [
+          "Standard",
+          "Sonderlocke",
+          "Auslauf",
+          "Zukunft"
+        ],
+        "description": "Lebenszyklus-Status. Der Prototyp wertet 'Auslauf' und 'Zukunft' gesondert aus."
+      },
+      "Must_Have": {
+        "type": "boolean",
+        "description": "Variante ist für einen Kernmarkt oder ein K.O.-Kriterium unverzichtbar und wird vom Prototyp geschützt."
+      },
+      "Bezeichnung": {
+        "type": "string",
+        "description": "Lesbarer Name der Variante."
+      },
+      "FEFCO_Typ": {
+        "type": "string",
+        "pattern": "^\\d{4}$",
+        "description": "Konstruktionstyp nach FEFCO-Code (vier Ziffern)."
+      },
+      "Laenge_mm": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "Innenmaß Länge. Einheit: mm."
+      },
+      "Breite_mm": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "Innenmaß Breite. Einheit: mm."
+      },
+      "Hoehe_mm": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "Innenmaß Höhe. Einheit: mm."
+      },
+      "Wellenart": {
+        "type": "string",
+        "enum": [
+          "E",
+          "B",
+          "C",
+          "EB",
+          "BC"
+        ],
+        "description": "Wellpappenqualität."
+      },
+      "Druck": {
+        "type": "string",
+        "enum": [
+          "ohne",
+          "1-farbig",
+          "2-farbig",
+          "4-farbig"
+        ],
+        "description": "Bedruckung."
+      },
+      "Preis_EUR": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Durchschnittlicher Verkaufspreis je Stück. Dient der Plausibilitätsprüfung: Umsatz_TEUR ≈ Absatz_Stk × Preis_EUR / 1000. Einheit: EUR / Stück."
+      },
+      "Anzahl_Kunden": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Anzahl der Kunden, die die Variante im Jahr gekauft haben."
+      },
+      "Hauptkunde_Anteil_Pct": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100,
+        "description": "Anteil des größten Kunden am Umsatz der Variante. Hoher Wert = Abhängigkeit von einem Kunden. Einheit: %."
+      },
+      "Variantenbildung_Schritt": {
+        "type": "string",
+        "enum": [
+          "Wellpappe",
+          "Zuschnitt",
+          "Druck",
+          "Stanzen",
+          "Kleben",
+          "Konfektionierung"
+        ],
+        "description": "Prozessschritt, in dem die Variante entsteht (Variantenbildungspunkt). Später = besser."
+      },
+      "Bemerkung": {
+        "type": "string",
+        "description": "Freitext, z. B. Sonderfall oder Annahme. Kein Komma, kein Semikolon."
+      }
+    },
+    "required": [
+      "Variante",
+      "Umsatz_TEUR",
+      "Marge_Pct",
+      "Absatz_Stk",
+      "Ruestkosten_Index",
+      "Status",
+      "Must_Have"
+    ],
+    "additionalProperties": false
+  }
+}
