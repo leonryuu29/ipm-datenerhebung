@@ -290,42 +290,66 @@ def blatt_anleitung(wb, technischer_test: bool):
     ws = wb.create_sheet("Anleitung", 0)
     ws.column_dimensions["A"].width = 3
     ws.column_dimensions["B"].width = 30
-    ws.column_dimensions["C"].width = 110
+    ws.column_dimensions["C"].width = 112
+    ws.column_dimensions["D"].width = 3
+    hintergrund = fuell(HELL)
+    for zeile_nr in range(1, 81):
+        for sp in range(1, 16):
+            ws.cell(row=zeile_nr, column=sp).fill = hintergrund
+    linie = Side(style="thin", color="E3E1D9")
+    karte = Border(bottom=linie)
     r = 2
 
     def titel(t):
         nonlocal r
-        ws.cell(row=r, column=2, value=t).font = f(size=16, bold=True, color=DUNKEL)
-        r += 1
+        for sp in (2, 3):
+            ws.cell(row=r, column=sp).fill = fuell(DUNKEL)
+            ws.cell(row=r + 1, column=sp).fill = fuell(DUNKEL)
+        c = ws.cell(row=r, column=2, value=t)
+        c.font = f(size=18, bold=True, color="FFFFFF")
+        c.alignment = Alignment(vertical="center", indent=1)
+        u = ws.cell(row=r + 1, column=2, value="IPM WiSe 2026/27 · Gruppe 6 · Thema 6 Variantenmanagement · Teilprojekt Datenerhebung")
+        u.font = f(size=10, color=TEAL)
+        u.alignment = Alignment(vertical="top", indent=1)
+        ws.row_dimensions[r].height = 36
+        ws.row_dimensions[r + 1].height = 22
+        r += 3
 
     def kopf(t):
         nonlocal r
+        ws.row_dimensions[r].height = 10
         r += 1
         c = ws.cell(row=r, column=2, value=t)
-        c.font, c.fill = f(size=11, bold=True, color="FFFFFF"), fuell(DUNKEL)
-        ws.cell(row=r, column=3).fill = fuell(DUNKEL)
+        c.font, c.fill = f(size=11, bold=True, color=DUNKEL), fuell(TEAL)
+        c.alignment = Alignment(vertical="center", indent=1)
+        ws.cell(row=r, column=3).fill = fuell(TEAL)
+        ws.row_dimensions[r].height = 22
         r += 1
 
     def zeile(links, rechts, farbe=None, fett=False):
         nonlocal r
         a = ws.cell(row=r, column=2, value=links)
-        a.font = f(bold=True)
-        a.alignment = Alignment(vertical="top", wrap_text=True)
-        if farbe:
-            a.fill = fuell(farbe)
+        a.font = f(bold=True, color=DUNKEL)
+        a.alignment = Alignment(vertical="center", wrap_text=True, indent=1)
+        a.fill = fuell(farbe or "FFFFFF")
+        a.border = karte
         b = ws.cell(row=r, column=3, value=rechts)
-        b.font = f(bold=fett)
-        b.alignment = Alignment(vertical="top", wrap_text=True)
-        ws.row_dimensions[r].height = max(15, 14 * (1 + len(str(rechts)) // 105))
+        b.font = f(bold=fett, color="262626")
+        b.alignment = Alignment(vertical="center", wrap_text=True, indent=1)
+        b.fill = fuell("FFFFFF")
+        b.border = karte
+        ws.row_dimensions[r].height = 20 + 13 * (len(str(rechts)) // 108)
         r += 1
 
     if technischer_test:
         titel("Technischer Testdatensatz – Variantenmanagement")
         zeile("Kennzeichnung", "SYNTHETIC – alle Werte sind erfunden und dienen nur dem Test von Schema, Konverter und Prototyp. "
-                               "Fachlich nicht abgestimmt.", fett=True)
+                               "Fachlich nicht abgestimmt.", farbe=GELB, fett=True)
+        ws.cell(row=r - 1, column=3).fill = fuell(GELB)
     else:
         titel("Excel-Vorlage Datenerhebung – Variantenmanagement")
-        zeile("Kennzeichnung", "SYNTHETIC – alle Werte in dieser Datei sind erfunden. Echte Referenzdaten nur mit Quelle und Abrufdatum.", fett=True)
+        zeile("Kennzeichnung", "SYNTHETIC – alle Werte in dieser Datei sind erfunden. Echte Referenzdaten nur mit Quelle und Abrufdatum.", farbe=GELB, fett=True)
+        ws.cell(row=r - 1, column=3).fill = fuell(GELB)
     zeile("Version / Stand", f"Vorlage v{fd.VERSION}, {fd.STAND} · IPM WiSe 2026/27, Gruppe 6, Teilprojekt Datenerhebung (Jonas Flütebonies, Yu Zhaoze)")
     zeile("Zweck", "Hier entstehen die Beispieldaten des fiktiven Kartonherstellers. Aus dieser Datei erzeugt ein Skript die "
                    "CSV- und JSON-Datei, die der Prototyp der Umsetzung lädt.")
