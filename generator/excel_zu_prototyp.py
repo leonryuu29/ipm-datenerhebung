@@ -215,6 +215,8 @@ def wandle_um(excel: Path, ziel: Path) -> tuple[int, str]:
 
 
 def main(argv=None) -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description="Excel-Vorlage in CSV/JSON für den Prototyp umwandeln.")
     ap.add_argument("excel", type=Path)
     ap.add_argument("--out", type=Path, required=True, help="Zielordner")

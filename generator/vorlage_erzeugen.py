@@ -5,6 +5,7 @@ Ergebnis: vorlagen/VARIANTEN_VORLAGE_v<VERSION>.xlsx
 """
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 from openpyxl import Workbook
@@ -439,6 +440,8 @@ def beispielzeilen() -> list[dict]:
 
 
 def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ziel = WURZEL / "vorlagen" / f"VARIANTEN_VORLAGE_v{fd.VERSION}.xlsx"
     baue(ziel, beispielzeilen(), testdaten.strategieprofile(), beispiel=True)
     print("geschrieben:", ziel.relative_to(WURZEL))

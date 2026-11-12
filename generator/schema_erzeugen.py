@@ -4,6 +4,7 @@ Aufruf:  python generator/schema_erzeugen.py
 """
 from __future__ import annotations
 
+import sys
 import json
 from pathlib import Path
 
@@ -43,6 +44,8 @@ def feldliste() -> dict:
 
 
 def main() -> None:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     SCHEMA_DIR.mkdir(exist_ok=True)
     v = fd.VERSION
     schreibe(SCHEMA_DIR / f"varianten_v{v}.schema.json", fd.schema_varianten())

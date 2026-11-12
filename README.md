@@ -27,16 +27,20 @@ ERP-Export (synthetisch) → Datenschnittstelle (Validierung, JSON) → Interfac
 | `data/reference/` | Öffentliche Referenzdaten mit Quelle und Abrufdatum |
 | `tests/` | Automatische Tests, Kopie des Prototyps, Ergebnisse und Testprotokolle |
 
-## Daten für den Prototyp erzeugen
+## Lokal einrichten und ausführen (Windows)
 
-```
-pip install openpyxl jsonschema pytest playwright
-python generator/excel_zu_prototyp.py <ausgefüllte_vorlage.xlsx> --out data/synthetic/<name>
-```
+Voraussetzung: Python 3.10 oder neuer (`winget install Python.Python.3.12`). In PowerShell im Repo-Ordner:
 
-Der Konverter prüft die Daten und schreibt `varianten.csv`, `varianten.json`, `strategieprofile.json` und `pruefbericht.txt`. Bei Fehlern schreibt er nur den Prüfbericht. `varianten.json` oder `varianten.csv` wird im Prototyp über „Eigene Stückliste / Portfolio laden“ hochgeladen.
+| Befehl | Was passiert |
+| --- | --- |
+| `.\einrichten.bat` | einmalig: legt die Umgebung `.venv` an, installiert die Pakete aus `requirements.txt` und lädt Chromium für den Browser-Test |
+| `.\tests_ausfuehren.bat` | lässt alle Tests laufen (der Browser-Test braucht Internet) |
+| `.\umwandeln.bat <vorlage.xlsx> <zielordner>` | prüft eine ausgefüllte Vorlage und schreibt `varianten.csv`, `varianten.json`, `strategieprofile.json`, `pruefbericht.txt` |
+| `.\neu_erzeugen.bat` | erzeugt Schemas, Excel-Vorlage und technischen Testdatensatz neu (nach Änderungen in `generator/felder.py`) |
 
-Felder ändern: nur in `generator/felder.py`, danach `python generator/schema_erzeugen.py` und `python generator/vorlage_erzeugen.py`. Tests: `python -m pytest tests -v` (der Browser-Test braucht `playwright install chromium` und Internet).
+Bei Fehlern schreibt `umwandeln.bat` nur den Prüfbericht. `varianten.json` oder `varianten.csv` wird im Prototyp über „Eigene Stückliste / Portfolio laden“ hochgeladen.
+
+Ohne die Batch-Dateien (Linux, macOS): `pip install -r requirements.txt`, `playwright install chromium`, dann `python -m pytest tests -v` und `python generator/excel_zu_prototyp.py <vorlage.xlsx> --out <zielordner>`.
 
 ## Einstieg
 
