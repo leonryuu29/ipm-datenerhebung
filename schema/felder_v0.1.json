@@ -296,6 +296,20 @@
           "beschreibung_cn": "变体在哪道工序形成（变体形成点）。越靠后越好。"
         },
         {
+          "name": "Referenz_Artikelnr",
+          "pflicht": false,
+          "typ": "string",
+          "einheit": "",
+          "erlaubte_werte": null,
+          "minimum": null,
+          "maximum": null,
+          "beispiel": "CAS16",
+          "herkunft": "Erweiterung",
+          "prototyp_id": null,
+          "beschreibung": "Artikelnummer des öffentlichen Katalogprodukts, an dem sich Maße und Ausführung orientieren. Quelle und Abrufdatum stehen in data/reference.",
+          "beschreibung_cn": "变体所参考的公开目录产品的货号（尺寸和规格以它为依据）。来源和获取日期记在 data/reference 里。"
+        },
+        {
           "name": "Bemerkung",
           "pflicht": false,
           "typ": "string",

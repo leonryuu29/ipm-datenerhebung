@@ -29,6 +29,8 @@ ERSTE_DATENZEILE = 3
 BEISPIEL_PRAEFIX = "BEISPIEL"
 WAHR = {"ja", "true", "wahr", "1", "x", "yes"}
 FALSCH = {"nein", "false", "falsch", "0", "no"}
+# Andere Schreibweisen von Spaltenköpfen, die in ausgefüllten Vorlagen vorkommen.
+SPALTEN_ALIAS = {"RAJA-Artikelnr.": "Referenz_Artikelnr", "RAJA-Artikelnr": "Referenz_Artikelnr", "Artikelnr.": "Referenz_Artikelnr"}
 
 
 class Lesefehler(Exception):
@@ -91,6 +93,7 @@ def lies_varianten(wb) -> tuple[list[dict], list[str], list[str]]:
         if c.value is None:
             continue
         name = str(c.value).strip()
+        name = SPALTEN_ALIAS.get(name, name)
         if name.startswith("Pruef_"):
             continue
         if name not in felder:

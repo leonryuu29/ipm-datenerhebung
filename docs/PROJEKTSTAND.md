@@ -26,6 +26,8 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 | 11.11. | Jonas trägt bis zum Treffen am 13.11. etwa 10–15 Kartonvarianten und die vier Strategieprofile in die Excel-Vorlage ein; am 13.11. wird die Tabelle in den Prototyp geladen. | Chat Yu/Jonas | BESCHLOSSEN |
 | 11.11. | Feldliste und JSON-Schema v0.1: Stufe 1 = Variantentabelle (sieben Pflichtspalten des Prototyps plus optionale Felder) und Strategieprofile (elf Regler des Prototyps); Stufe 2 = Entwurf der weiteren ERP-Blöcke. | `reports/FELDLISTE_v0.1_DE.pdf`, `schema/` | VORSCHLAG |
 | 11.11. | Übergabe an den Prototyp nur über den Konverter (`generator/excel_zu_prototyp.py`), nicht als direkt aus Excel gespeicherte CSV. | Testprotokoll 11.11., Befund B1 | VORSCHLAG |
+| 12.11. | Varianten orientieren sich an einem öffentlichen Katalog (RAJA Hauptkatalog 09/2026): Artikelnummer, Maße und Wellenzahl stammen aus dem Katalog, alle Geschäftszahlen bleiben SYNTHETIC. | Vorschlag Jonas per Chat; `data/reference/QUELLEN.md` | VORSCHLAG |
+| 12.11. | Neues optionales Feld `Referenz_Artikelnr` in der Variantentabelle (Schema bleibt v0.1, da noch nicht abgestimmt). | `generator/felder.py` | VORSCHLAG |
 
 ## 3. Termine
 
@@ -46,9 +48,9 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 | AP | Stand 11.11. |
 | --- | --- |
 | D1 Mindestfelder | Entwurf liegt vor (Feldliste v0.1); Abstimmung mit Konzept und Umsetzung am 13.11. |
-| D2 Produktfall und Strategieprofile | Jonas arbeitet mit der Excel-Vorlage v0.1; Profile sind als technischer Vorschlag vorbefüllt. |
+| D2 Produktfall und Strategieprofile | Stand 12.11.: Jonas hat 15 Varianten aus dem RAJA-Katalog eingetragen (Artikelnummer, Maße, Wellenart). Geschäftszahlen fehlen noch bei 12 Varianten, Sonderfälle und Strategieprofile sind noch offen. |
 | D3 Datenmodell und JSON-Schema | v0.1 erzeugt und getestet; v1 nach der Abstimmung, Ende KW47. |
-| D7/D10 Validierung, Integration | Prüfregeln und Konverter vorhanden; erster Lauf im Prototyp bestanden (70 Tests, Testprotokoll 11.11.). |
+| D7/D10 Validierung, Integration | Prüfregeln und Konverter vorhanden; erster Lauf im Prototyp bestanden (70 Tests am 11.11., Testprotokoll; seit 12.11. 71 Tests). |
 | D8 Testszenarien | Testfallkatalog v0.1 mit acht Fällen liegt als Vorschlag vor (`reports/TESTFALLKATALOG_v0.1_DE.pdf`); Erwartungen fachlich noch abzustimmen. |
 | D4, D5, D6, D9, D11 | noch nicht begonnen. |
 

@@ -19,7 +19,7 @@
 | Excel 模板 | Jonas 填数据的入口 | `vorlagen/` |
 | 转换脚本 | 检查 Excel 并转成 CSV / JSON | `generator/excel_zu_prototyp.py` |
 | 测试数据 | 14 个虚构变体，只测流程 | `data/synthetic/technischer_test_v0.1/` |
-| 测试 | 70 个，全部通过 | `tests/` |
+| 测试 | 71 个，全部通过 | `tests/` |
 
 架构图：`ARCHITEKTUR_DATENERHEBUNG_CN.png`
 
@@ -31,7 +31,7 @@
 > Ich habe eine Excel-Vorlage gemacht. Daraus erzeugt ein Skript die Datei für den Prototyp. Ich lade sie jetzt einmal hoch.
 
 **2. 讲架构和字段（10 分钟）**
-打开字段清单。7 个必填字段来自原型，12 个可选字段是我们的建议。
+打开字段清单。7 个必填字段来自原型，13 个可选字段是我们的建议（12 日按 Jonas 的做法加了“参考货号”）。
 
 > An die Umsetzung: Reichen die sieben Pflichtfelder, oder braucht der Prototyp noch weitere Felder?
 

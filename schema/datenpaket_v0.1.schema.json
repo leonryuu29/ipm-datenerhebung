@@ -320,6 +320,11 @@
             ],
             "description": "Prozessschritt, in dem die Variante entsteht (Variantenbildungspunkt). Später = besser."
           },
+          "Referenz_Artikelnr": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
+            "description": "Artikelnummer des öffentlichen Katalogprodukts, an dem sich Maße und Ausführung orientieren. Quelle und Abrufdatum stehen in data/reference."
+          },
           "Bemerkung": {
             "type": "string",
             "description": "Freitext, z. B. Sonderfall oder Annahme. Kein Komma, kein Semikolon."

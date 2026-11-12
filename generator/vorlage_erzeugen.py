@@ -136,7 +136,7 @@ def blatt_varianten(wb, bereiche, zeilen: list[dict], beispiel: bool):
     ws.row_dimensions[2].height = 36
 
     breiten = {"Variante": 30, "Bezeichnung": 44, "Status": 14, "Variantenbildung_Schritt": 20, "Bemerkung": 44,
-               "Hauptkunde_Anteil_Pct": 16, "Ruestkosten_Index": 14}
+               "Hauptkunde_Anteil_Pct": 16, "Ruestkosten_Index": 14, "Referenz_Artikelnr": 18}
     for fl in felder:
         ws.column_dimensions[spalte[fl["name"]]].width = breiten.get(fl["name"], 13)
     ws.column_dimensions[get_column_letter(n + 1)].width = 16

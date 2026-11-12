@@ -127,3 +127,18 @@ def test_beispielzeilen_werden_neben_echten_zeilen_uebersprungen(tmp_path):
     v = json.loads((tmp_path / "aus" / "varianten.json").read_text(encoding="utf-8"))
     assert [x["Variante"] for x in v] == ["N01_0201_100x100x100_B"]
     assert v[0]["Must_Have"] is False
+
+
+def test_spalte_raja_artikelnr_wird_als_referenz_gelesen(tmp_path):
+    """Jonas hat die Katalognummer als eigene Spalte 'RAJA-Artikelnr.' ergänzt."""
+    def aendern(wb):
+        ws = wb["Varianten"]
+        sp = spalte(ws, "Referenz_Artikelnr")
+        ws.cell(row=1, column=sp, value="RAJA-Artikelnr.")
+        ws.cell(row=3, column=sp, value="CAS16")
+    code, bericht = konv.wandle_um(_kopie_mit(tmp_path, aendern), tmp_path / "aus")
+    assert code == 0, bericht
+    v = json.loads((tmp_path / "aus" / "varianten.json").read_text(encoding="utf-8"))
+    assert v[0]["Referenz_Artikelnr"] == "CAS16" and "Referenz_Artikelnr" not in v[1]
+    kopf = (tmp_path / "aus" / "varianten.csv").read_text(encoding="utf-8").split("\n")[0].split(",")
+    assert kopf[:7] == fd.PROTOTYP_SPALTEN and "Referenz_Artikelnr" in kopf
