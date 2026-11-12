@@ -1,6 +1,6 @@
 # Projektstand – Teilprojekt Datenerhebung
 
-**Stand:** 11.11.2026  
+**Stand:** 12.11.2026  
 **Status-Labels:** `BESCHLOSSEN` (im Team oder mit Betreuer festgelegt) · `VORSCHLAG` (noch abzustimmen) · `OFFEN`
 
 ## 1. Auftrag (Thema 6, Steffen Feld)
@@ -49,7 +49,8 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 | D2 Produktfall und Strategieprofile | Jonas arbeitet mit der Excel-Vorlage v0.1; Profile sind als technischer Vorschlag vorbefüllt. |
 | D3 Datenmodell und JSON-Schema | v0.1 erzeugt und getestet; v1 nach der Abstimmung, Ende KW47. |
 | D7/D10 Validierung, Integration | Prüfregeln und Konverter vorhanden; erster Lauf im Prototyp bestanden (70 Tests, Testprotokoll 11.11.). |
-| D4, D5, D6, D8, D9, D11 | noch nicht begonnen. |
+| D8 Testszenarien | Testfallkatalog v0.1 mit acht Fällen liegt als Vorschlag vor (`reports/TESTFALLKATALOG_v0.1_DE.pdf`); Erwartungen fachlich noch abzustimmen. |
+| D4, D5, D6, D9, D11 | noch nicht begonnen. |
 
 ## 5. Offene Punkte
 
