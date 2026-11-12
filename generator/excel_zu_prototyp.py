@@ -215,13 +215,22 @@ def wandle_um(excel: Path, ziel: Path) -> tuple[int, str]:
 
 
 def main(argv=None) -> int:
+    """Einstieg für die Kommandozeile."""
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description="Excel-Vorlage in CSV/JSON für den Prototyp umwandeln.")
     ap.add_argument("excel", type=Path)
     ap.add_argument("--out", type=Path, required=True, help="Zielordner")
     a = ap.parse_args(argv)
-    code, bericht = wandle_um(a.excel, a.out)
+    try:
+        code, bericht = wandle_um(a.excel, a.out)
+    except PermissionError as e:
+        print(f"Kann {e.filename} nicht öffnen oder schreiben: Die Datei ist vermutlich in Excel geöffnet. Bitte schließen.\n"
+              f"无法读写 {e.filename}：文件可能正在 Excel 里打开，请关闭后再运行。")
+        return 2
+    except FileNotFoundError as e:
+        print(f"Datei nicht gefunden: {e.filename}\n找不到文件：{e.filename}")
+        return 2
     print(bericht)
     return code
 

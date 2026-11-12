@@ -29,6 +29,8 @@ ERP-Export (synthetisch) → Datenschnittstelle (Validierung, JSON) → Interfac
 
 ## Lokal einrichten und ausführen (Windows, PowerShell)
 
+Ausführliche Anleitung auf Chinesisch: [docs/AUSFUEHREN_CN.md](docs/AUSFUEHREN_CN.md)
+
 Voraussetzung: Python 3.10 oder neuer. Alle Befehle im Repo-Ordner ausführen.
 
 Einmalig einrichten:

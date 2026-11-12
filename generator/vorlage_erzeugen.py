@@ -424,7 +424,12 @@ def baue(pfad: Path, zeilen: list[dict], profile: list[dict], *, beispiel: bool,
     wb.properties.creator = "Yu Zhaoze"
     wb.properties.title = "Datenerhebung Variantenmanagement"
     pfad.parent.mkdir(parents=True, exist_ok=True)
-    wb.save(pfad)
+    try:
+        wb.save(pfad)
+    except PermissionError:
+        sys.exit(f"Kann {pfad.name} nicht schreiben: Die Datei ist vermutlich in Excel geöffnet. "
+                 f"Bitte schließen und noch einmal ausführen.\n"
+                 f"无法写入 {pfad.name}：文件可能正在 Excel 里打开。请关闭后再运行一次。")
     return pfad
 
 
