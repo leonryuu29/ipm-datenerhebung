@@ -27,20 +27,33 @@ ERP-Export (synthetisch) → Datenschnittstelle (Validierung, JSON) → Interfac
 | `data/reference/` | Öffentliche Referenzdaten mit Quelle und Abrufdatum |
 | `tests/` | Automatische Tests, Kopie des Prototyps, Ergebnisse und Testprotokolle |
 
-## Lokal einrichten und ausführen (Windows)
+## Lokal einrichten und ausführen (Windows, PowerShell)
 
-Voraussetzung: Python 3.10 oder neuer (`winget install Python.Python.3.12`). In PowerShell im Repo-Ordner:
+Voraussetzung: Python 3.10 oder neuer. Alle Befehle im Repo-Ordner ausführen.
 
-| Befehl | Was passiert |
-| --- | --- |
-| `.\einrichten.bat` | einmalig: legt die Umgebung `.venv` an, installiert die Pakete aus `requirements.txt` und lädt Chromium für den Browser-Test |
-| `.\tests_ausfuehren.bat` | lässt alle Tests laufen (der Browser-Test braucht Internet) |
-| `.\umwandeln.bat <vorlage.xlsx> <zielordner>` | prüft eine ausgefüllte Vorlage und schreibt `varianten.csv`, `varianten.json`, `strategieprofile.json`, `pruefbericht.txt` |
-| `.\neu_erzeugen.bat` | erzeugt Schemas, Excel-Vorlage und technischen Testdatensatz neu (nach Änderungen in `generator/felder.py`) |
+Einmalig einrichten:
 
-Bei Fehlern schreibt `umwandeln.bat` nur den Prüfbericht. `varianten.json` oder `varianten.csv` wird im Prototyp über „Eigene Stückliste / Portfolio laden“ hochgeladen.
+```
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python -m playwright install chromium
+```
 
-Ohne die Batch-Dateien (Linux, macOS): `pip install -r requirements.txt`, `playwright install chromium`, dann `python -m pytest tests -v` und `python generator/excel_zu_prototyp.py <vorlage.xlsx> --out <zielordner>`.
+Generator:
+
+```
+.venv\Scripts\python generator\schema_erzeugen.py
+.venv\Scripts\python generator\vorlage_erzeugen.py
+.venv\Scripts\python generator\excel_zu_prototyp.py <vorlage.xlsx> --out <zielordner>
+```
+
+Tests (der Browser-Test braucht Internet):
+
+```
+.venv\Scripts\python -m pytest tests -v
+```
+
+Bei Fehlern schreibt der Konverter nur den Prüfbericht. `varianten.json` oder `varianten.csv` wird im Prototyp über „Eigene Stückliste / Portfolio laden“ hochgeladen.
 
 ## Einstieg
 
