@@ -21,7 +21,8 @@ def spalte(ws, name):
 
 def test_vorlage_hat_alle_blaetter_und_spalten():
     wb = load_workbook(VORLAGE)
-    assert wb.sheetnames == ["Anleitung", "Varianten", "Strategieprofile", "Felder", "Ausblick_Stufe2", "Listen"]
+    assert wb.sheetnames == ["Anleitung", "Varianten", "Strategieprofile", "Felder", "ERP-Datenblöcke (Entwurf)", "Listen"]
+    assert wb["Listen"].sheet_state == "hidden"
     kopf = [c.value for c in wb["Varianten"][1]]
     assert kopf == [f["name"] for f in fd.VARIANTEN["felder"]] + ["Pruef_Umsatz_TEUR", "Pruef_Hinweis"]
     assert len(wb["Varianten"].data_validations.dataValidation) >= 10

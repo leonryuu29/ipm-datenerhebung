@@ -22,6 +22,7 @@ WURZEL = Path(__file__).resolve().parent.parent
 ERSTE_DATENZEILE = 3
 LETZTE_DATENZEILE = 62
 BEISPIEL_PRAEFIX = "BEISPIEL"
+BLATT_ERP = "ERP-Datenblöcke (Entwurf)"
 PRUEF_SPALTEN = ["Pruef_Umsatz_TEUR", "Pruef_Hinweis"]
 
 DUNKEL, TEAL, HELL, GRAU, GELB = "18323D", "9BC8C4", "F5F4EF", "D9D9D9", "FFF2CC"
@@ -400,8 +401,8 @@ def blatt_anleitung(wb, technischer_test: bool):
     zeile("Varianten", "Eine Zeile je Variante. Hier eintragen.")
     zeile("Strategieprofile", "Eine Spalte je Strategie. Vorschlag prüfen.")
     zeile("Felder", "Beschreibung aller Felder der Stufe 1 mit Typ, Einheit, erlaubten Werten und Beispiel.")
-    zeile("Ausblick_Stufe2", "Entwurf der weiteren Datenblöcke (Stückliste, Arbeitsplan, Aufträge, Kosten, Kunden, Wettbewerb). Noch nicht ausfüllen.")
-    zeile("Listen", "Werte der Dropdowns. Nicht ändern.")
+    zeile(BLATT_ERP, "Entwurf der weiteren Datenblöcke (Stückliste, Arbeitsplan, Aufträge, Kosten, Kunden, Wettbewerb). Noch nicht ausfüllen.")
+    zeile("Listen", "Ausgeblendet. Enthält die Werte der Dropdowns. Nicht ändern.")
     ws.sheet_view.showGridLines = False
     return ws
 
@@ -414,10 +415,11 @@ def baue(pfad: Path, zeilen: list[dict], profile: list[dict], *, beispiel: bool,
     blatt_strategieprofile(wb, bereiche, profile)
     blatt_felder(wb, "Felder", [fd.VARIANTEN, fd.STRATEGIEPROFILE],
                  f"Feldliste Stufe 1, Schema v{fd.VERSION}, Stand {fd.STAND}. Herkunft Prototyp = Feld oder Regler des Prototyps der Umsetzung.")
-    blatt_felder(wb, "Ausblick_Stufe2", [b for b in fd.BLOECKE if b["stufe"] == 2],
+    blatt_felder(wb, BLATT_ERP, [b for b in fd.BLOECKE if b["stufe"] == 2],
                  f"Entwurf Stufe 2, Schema v{fd.VERSION}, Stand {fd.STAND}. Noch nicht abgestimmt und noch nicht auszufüllen.")
     blatt_anleitung(wb, technischer_test)
-    wb._sheets = [wb[n] for n in ["Anleitung", "Varianten", "Strategieprofile", "Felder", "Ausblick_Stufe2", "Listen"]]
+    wb._sheets = [wb[n] for n in ["Anleitung", "Varianten", "Strategieprofile", "Felder", BLATT_ERP, "Listen"]]
+    wb["Listen"].sheet_state = "hidden"
     wb.active = 0
     wb.calculation.fullCalcOnLoad = True
     wb.properties.creator = "Yu Zhaoze"
