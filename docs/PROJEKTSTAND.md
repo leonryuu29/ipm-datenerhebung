@@ -30,7 +30,7 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 | 12.11. | Neues optionales Feld `Referenz_Artikelnr` in der Variantentabelle (Schema bleibt v0.1, da noch nicht abgestimmt). | `generator/felder.py` | VORSCHLAG |
 | 13.11. | Übergabeformat: JSON ist das offizielle Format für die Produktdaten; CSV bleibt vorerst als Nebenausgabe, bis die Umsetzung startet. | Teamtreffen 13.11. | BESCHLOSSEN |
 | 13.11. | `Must_Have` wird aus den Daten entfernt; die Auswahl trifft der Nutzer später in der Oberfläche (Maske). | Teamtreffen 13.11. | BESCHLOSSEN |
-| 13.11. | Subjektive Beschreibungsfelder entfallen; die Daten enthalten nur objektive Produktinformationen. Welche Felder genau, legt das Konzept fest. | Teamtreffen 13.11. | BESCHLOSSEN (Details OFFEN) |
+| 13.11. | Subjektive Beschreibungsfelder entfallen; die Daten enthalten nur objektive Produktinformationen. `Bemerkung` entfällt sicher; über weitere Felder entscheidet das Konzept. | Teamtreffen 13.11. | BESCHLOSSEN (Details OFFEN) |
 | 13.11. | Das Konzept erstellt auf Basis unserer Feldliste v0.1 eine eigene vollständige Fassung; danach gemeinsamer Abgleich und Schema v1. | Teamtreffen 13.11.; Gespräch Yannick, Lukas, Yu | BESCHLOSSEN |
 | 13.11. | Keine Erzeugung von ERP-Testdaten, bevor die Felder feststehen. | Gespräch Yannick, Lukas, Yu | BESCHLOSSEN |
 | 13.11. | Der HTML-Prototyp der Umsetzung ist nur eine Konzeptdemo und wird nicht weiter als Maßstab für die Daten verwendet. | Teamtreffen 13.11. | BESCHLOSSEN |
@@ -64,7 +64,7 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 
 ## 5. Offene Punkte
 
-1. Felder: Fassung des Konzepts abwarten und abgleichen; welche subjektiven Felder entfallen (`Bezeichnung`, `Bemerkung`, `Beschreibung`?).
+1. Felder: Fassung des Konzepts abwarten und abgleichen; welche weiteren subjektiven Felder entfallen (`Bezeichnung`, `Beschreibung`?); `Bemerkung` entfällt sicher.
 2. Bleibt `Hauptkunde_Anteil_Pct` drin? Im Treffen positiv bewertet, Entscheidung beim Konzept.
 3. Ein Datensatz je Strategie oder ein gemeinsamer Datensatz mit vier Profilen.
 4. Analyse je Produktgruppe statt für das ganze Unternehmen (Diskussion im Konzept) – Folgen für die Datenstruktur.
