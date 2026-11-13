@@ -1,5 +1,22 @@
 # 运行说明（Windows / PowerShell）
 
+## 各个文件的关系
+
+```
+felder.py（字段定义，手写）
+   ├─→ schema_erzeugen.py  →  schema/ 里的 4 个文件（规则）
+   └─→ vorlage_erzeugen.py →  两个 Excel：
+                                ① 空模板（给 Jonas）
+        testdaten.py ─────────→ ② 填好 14 个变体的测试 Excel
+        （14 个变体 + 4 个画像，手写）
+                                      │
+                          excel_zu_prototyp.py（用 pruefen.py 检查）
+                                      ↓
+                 varianten.csv / varianten.json / strategieprofile.json
+                                      ↓
+                              上传到原型网页
+```
+
 所有命令都在仓库目录里运行。每次打开新的 PowerShell 先进入目录：
 
 ```

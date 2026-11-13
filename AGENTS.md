@@ -8,3 +8,6 @@
 - Schema-Änderungen nur mit Abstimmung mit Konzept und Umsetzung; Version im Schema hochzählen.
 - Team-Dokumente auf Deutsch; für Yu zusätzlich chinesische Fassungen (`*_CN`). Abgaben als DOCX/PDF in `reports/`.
 - Arbeitszeiten für das Controlling (Mark) mitführen.
+- Felder nur in `generator/felder.py` ändern; danach Schemas und Vorlage neu erzeugen und alle Tests laufen lassen (`docs/AUSFUEHREN_CN.md`).
+- Übergabeformat ist JSON; CSV ist nur Nebenausgabe.
+- Commits als Yu Zhaoze, ohne Hinweise auf KI-Werkzeuge (keine Co-Authored-By-, Session- oder „Generated with“-Zeilen).
