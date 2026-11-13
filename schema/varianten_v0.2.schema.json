@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/leonryuu29/ipm-datenerhebung/schema/varianten_v0.1.schema.json",
-  "title": "Varianten (Portfolio-Tabelle) v0.1",
-  "description": "Eine Zeile je Produktvariante. Die ersten sieben Felder liest der Prototyp direkt; die Erweiterungsfelder werden als Zusatzinformation in den Prompt übernommen.",
+  "$id": "https://github.com/leonryuu29/ipm-datenerhebung/schema/varianten_v0.2.schema.json",
+  "title": "Varianten (Portfolio-Tabelle) v0.2",
+  "description": "Eine Zeile je Produktvariante, nur objektive Produktinformationen. Die ersten sechs Felder sind Pflicht; die übrigen Felder sind optional.",
   "type": "array",
   "minItems": 1,
   "items": {
@@ -45,10 +45,6 @@
           "Zukunft"
         ],
         "description": "Lebenszyklus-Status. Der Prototyp wertet 'Auslauf' und 'Zukunft' gesondert aus."
-      },
-      "Must_Have": {
-        "type": "boolean",
-        "description": "Variante ist für einen Kernmarkt oder ein K.O.-Kriterium unverzichtbar und wird vom Prototyp geschützt."
       },
       "Bezeichnung": {
         "type": "string",
@@ -127,10 +123,6 @@
         "type": "string",
         "pattern": "^[A-Za-z0-9][A-Za-z0-9_.\\-]*$",
         "description": "Artikelnummer des öffentlichen Katalogprodukts, an dem sich Maße und Ausführung orientieren. Quelle und Abrufdatum stehen in data/reference."
-      },
-      "Bemerkung": {
-        "type": "string",
-        "description": "Freitext, z. B. Sonderfall oder Annahme. Kein Komma, kein Semikolon."
       }
     },
     "required": [
@@ -139,8 +131,7 @@
       "Marge_Pct",
       "Absatz_Stk",
       "Ruestkosten_Index",
-      "Status",
-      "Must_Have"
+      "Status"
     ],
     "additionalProperties": false
   }

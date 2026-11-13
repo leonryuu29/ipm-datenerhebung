@@ -6,14 +6,17 @@ Aus diesen Definitionen werden erzeugt:
   - vorlagen/*.xlsx               (Excel-Vorlage, Blatt "Felder" und Dropdowns)
   - reports/FELDLISTE_*.docx      (Feldliste für das Team)
 
-Stufe 1 = sofort nutzbar, kompatibel mit dem Prototyp der Umsetzung
-          (ki_wrapper_variantenmanagement.html, Stand 10.11.2026).
+Stufe 1 = Produktdaten, die als JSON übergeben werden. Pflichtfelder ursprünglich aus dem
+          Demo-Prototyp der Umsetzung (ki_wrapper_variantenmanagement.html, Stand 10.11.2026).
+
+v0.2 (13.11.2026): Must_Have und Bemerkung entfernt (Teamtreffen 13.11.: Auswahl in der
+Oberfläche, keine subjektiven Texte in den Daten).
 Stufe 2 = Entwurf für das vollständige Datenpaket (KW47-48), noch abzustimmen.
 """
 from __future__ import annotations
 
-VERSION = "0.1"
-STAND = "2026-11-11"
+VERSION = "0.2"
+STAND = "2026-11-13"
 KENNZEICHNUNG = "SYNTHETIC"
 
 STRATEGIEN = ["Massenproduzent", "Kostenführer", "Innovationsführer", "Nischenanbieter"]
@@ -59,9 +62,9 @@ ID_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9_.\-]*$"
 VARIANTEN = dict(
     id="varianten", stufe=1,
     titel="Varianten (Portfolio-Tabelle)", titel_cn="变体（产品组合表）",
-    de="Eine Zeile je Produktvariante. Die ersten sieben Felder liest der Prototyp direkt; "
-       "die Erweiterungsfelder werden als Zusatzinformation in den Prompt übernommen.",
-    cn="每个产品变体一行。前七个字段原型可以直接读取；扩展字段会作为附加信息写进 Prompt。",
+    de="Eine Zeile je Produktvariante, nur objektive Produktinformationen. Die ersten sechs Felder sind Pflicht; "
+       "die übrigen Felder sind optional.",
+    cn="每个产品变体一行，只放客观的产品信息。前六个字段必填，其余字段可选。",
     felder=[
         F("Variante", "string", "Eindeutige Kennung der Variante. Nur Buchstaben, Ziffern, _ . - (kein Komma, kein Semikolon, kein Leerzeichen).",
           "变体的唯一编号。只能用字母、数字、_ . -（不能有逗号、分号、空格）。",
@@ -78,9 +81,6 @@ VARIANTEN = dict(
         F("Status", "string", "Lebenszyklus-Status. Der Prototyp wertet 'Auslauf' und 'Zukunft' gesondert aus.",
           "生命周期状态。原型会单独处理 'Auslauf'（退市）和 'Zukunft'（未来产品）。",
           pflicht=True, beispiel="Standard", enum=STATUS, herkunft="Prototyp"),
-        F("Must_Have", "boolean", "Variante ist für einen Kernmarkt oder ein K.O.-Kriterium unverzichtbar und wird vom Prototyp geschützt.",
-          "该变体对核心市场或硬性要求不可缺少，原型会保护它不被删除。",
-          pflicht=True, beispiel=True, herkunft="Prototyp"),
         F("Bezeichnung", "string", "Lesbarer Name der Variante.", "变体的可读名称。",
           beispiel="Faltkarton 300x200x150 B-Welle"),
         F("FEFCO_Typ", "string", "Konstruktionstyp nach FEFCO-Code (vier Ziffern).", "FEFCO 箱型代码（四位数字）。",
@@ -104,8 +104,6 @@ VARIANTEN = dict(
         F("Referenz_Artikelnr", "string", "Artikelnummer des öffentlichen Katalogprodukts, an dem sich Maße und Ausführung orientieren. Quelle und Abrufdatum stehen in data/reference.",
           "变体所参考的公开目录产品的货号（尺寸和规格以它为依据）。来源和获取日期记在 data/reference 里。",
           beispiel="CAS16", pattern=ID_PATTERN),
-        F("Bemerkung", "string", "Freitext, z. B. Sonderfall oder Annahme. Kein Komma, kein Semikolon.",
-          "备注，比如特殊情况或假设。不能有逗号和分号。", beispiel="nahezu identisch mit K02"),
     ],
 )
 

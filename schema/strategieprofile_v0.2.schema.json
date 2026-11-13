@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/leonryuu29/ipm-datenerhebung/schema/strategieprofile_v0.1.schema.json",
-  "title": "Strategieprofile v0.1",
+  "$id": "https://github.com/leonryuu29/ipm-datenerhebung/schema/strategieprofile_v0.2.schema.json",
+  "title": "Strategieprofile v0.2",
   "description": "Ein Profil je Unternehmensstrategie. Die Felder entsprechen den Reglern des Prototyps, sodass jedes Profil dort direkt eingestellt werden kann.",
   "type": "array",
   "minItems": 1,

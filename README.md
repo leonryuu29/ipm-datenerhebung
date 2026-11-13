@@ -20,7 +20,7 @@ ERP-Export (synthetisch) → Datenschnittstelle (Validierung, JSON) → Interfac
 | --- | --- |
 | `docs/` | Projektstand, Entscheidungen, offene Punkte, später Datenwörterbuch und Annahmenregister |
 | `reports/` | Abgaben und Arbeitsstände als DOCX/PDF (DE + CN) |
-| `schema/` | JSON-Schemas v0.1 (Datenvertrag mit Konzept und Umsetzung) und maschinenlesbare Feldliste |
+| `schema/` | JSON-Schemas v0.2 (Datenvertrag mit Konzept und Umsetzung) und maschinenlesbare Feldliste |
 | `vorlagen/` | Excel-Vorlage für die fachliche Datenerfassung |
 | `generator/` | Felddefinitionen, Schema- und Vorlagenerzeugung, Prüfung, Konverter Excel → CSV/JSON; später der Datengenerator |
 | `data/synthetic/` | Datensätze, gekennzeichnet als SYNTHETIC |
@@ -61,7 +61,7 @@ Bei Fehlern schreibt der Konverter nur den Prüfbericht. `varianten.json` oder `
 
 1. [docs/PROJEKTSTAND.md](docs/PROJEKTSTAND.md) lesen – aktueller Stand, Beschlüsse, Termine.
 2. [reports/DATENERHEBUNG_AUFGABEN_DE.pdf](reports/DATENERHEBUNG_AUFGABEN_DE.pdf) – Arbeitspakete und Arbeitsteilung.
-3. [reports/FELDLISTE_v0.1_DE.pdf](reports/FELDLISTE_v0.1_DE.pdf) – Feldliste, erster Entwurf des Datenvertrags.
+3. [reports/FELDLISTE_v0.2_DE.pdf](reports/FELDLISTE_v0.2_DE.pdf) – Feldliste, erster Entwurf des Datenvertrags.
 4. [tests/TESTPROTOKOLL_2026-11-11.md](tests/TESTPROTOKOLL_2026-11-11.md) – was getestet ist und was dabei aufgefallen ist.
 5. [AGENTS.md](AGENTS.md) – Arbeitsregeln für dieses Repo.
 

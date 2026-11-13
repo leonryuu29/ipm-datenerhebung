@@ -28,7 +28,15 @@ def test_schema_ist_gueltig_und_datei_aktuell(name):
 def test_prototyp_spalten_sind_pflicht():
     schema = fd.schema_varianten()
     assert schema["items"]["required"] == ["Variante", "Umsatz_TEUR", "Marge_Pct", "Absatz_Stk",
-                                           "Ruestkosten_Index", "Status", "Must_Have"]
+                                           "Ruestkosten_Index", "Status"]
+
+
+def test_must_have_und_bemerkung_sind_entfernt():
+    """Teamtreffen 13.11.: Must_Have wählt der Nutzer in der Oberfläche, keine subjektiven Texte."""
+    felder = fd.schema_varianten()["items"]["properties"]
+    assert "Must_Have" not in felder and "Bemerkung" not in felder
+    for zeile in testdaten.varianten():
+        assert "Must_Have" not in zeile and "Bemerkung" not in zeile
 
 
 @pytest.mark.parametrize("block", fd.BLOECKE, ids=lambda b: b["id"])
@@ -61,12 +69,12 @@ FEHLERFAELLE = {
     "Rüstkosten-Index 0": lambda v: v[0].update(Ruestkosten_Index=0),
     "Absatz negativ": lambda v: v[0].update(Absatz_Stk=-1),
     "Absatz als Text": lambda v: v[0].update(Absatz_Stk="510000"),
-    "Must_Have als Text": lambda v: v[0].update(Must_Have="ja"),
+    "Must_Have wieder drin": lambda v: v[0].update(Must_Have=True),
     "Kennung mit Komma": lambda v: v[0].update(Variante="K01,neu"),
     "Kennung mit Leerzeichen": lambda v: v[0].update(Variante="K01 neu"),
     "Kennung doppelt": lambda v: v[1].update(Variante=v[0]["Variante"]),
     "Komma in Bezeichnung": lambda v: v[0].update(Bezeichnung="Faltkarton, klein"),
-    "Semikolon in Bemerkung": lambda v: v[0].update(Bemerkung="a; b"),
+    "Semikolon in Bezeichnung": lambda v: v[0].update(Bezeichnung="a; b"),
     "unbekanntes Feld": lambda v: v[0].update(Farbe="blau"),
     "FEFCO dreistellig": lambda v: v[0].update(FEFCO_Typ="201"),
     "Wellenart unbekannt": lambda v: v[0].update(Wellenart="X"),
@@ -85,7 +93,6 @@ def test_fehlerhafte_varianten_werden_abgelehnt(fall):
 HINWEISFAELLE = {
     "Umsatz passt nicht zu Absatz × Preis": (lambda v: v[0].update(Umsatz_TEUR=500.0), "Umsatz_TEUR"),
     "ein Kunde, Anteil unter 100": (lambda v: v[7].update(Hauptkunde_Anteil_Pct=80), "nur ein Kunde"),
-    "Auslauf und Must_Have": (lambda v: v[9].update(Must_Have=True), "Auslauf und Must_Have"),
 }
 
 

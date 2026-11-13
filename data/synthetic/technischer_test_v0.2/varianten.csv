@@ -1,0 +1,15 @@
+Variante,Umsatz_TEUR,Marge_Pct,Absatz_Stk,Ruestkosten_Index,Status,Bezeichnung,FEFCO_Typ,Laenge_mm,Breite_mm,Hoehe_mm,Wellenart,Druck,Preis_EUR,Anzahl_Kunden,Hauptkunde_Anteil_Pct,Variantenbildung_Schritt
+K01_0201_200x150x100_B,198.4,24,620000,2,Standard,Faltkarton 200x150x100 B-Welle,0201,200,150,100,B,ohne,0.32,62,8,Zuschnitt
+K02_0201_300x200x150_B,229.5,26,510000,2,Standard,Faltkarton 300x200x150 B-Welle,0201,300,200,150,B,ohne,0.45,45,9,Zuschnitt
+K03_0201_305x200x150_B,17.9,13,38000,4,Standard,Faltkarton 305x200x150 B-Welle,0201,305,200,150,B,ohne,0.47,3,71,Zuschnitt
+K04_0201_400x300x200_BC,235.2,22,240000,3,Standard,Faltkarton 400x300x200 BC-Welle,0201,400,300,200,BC,ohne,0.98,28,14,Wellpappe
+K05_0201_600x400x400_BC,175.8,19,95000,3,Standard,Faltkarton 600x400x400 BC-Welle,0201,600,400,400,BC,ohne,1.85,17,22,Wellpappe
+K06_0427_250x175x80_E_1c,111.6,31,180000,5,Standard,Versandschachtel 250x175x80 E-Welle 1-farbig,0427,250,175,80,E,1-farbig,0.62,21,18,Druck
+K07_0427_310x220x100_E_4c,66,35,60000,8,Standard,Versandschachtel 310x220x100 E-Welle 4-farbig,0427,310,220,100,E,4-farbig,1.1,6,40,Druck
+K08_0201_347x253x118_B_SG,161.2,11,310000,6,Sonderlocke,Faltkarton Sondergröße 347x253x118 B-Welle,0201,347,253,118,B,ohne,0.52,1,100,Zuschnitt
+K09_0421_180x130x60_E,0.9,7,900,9,Sonderlocke,Aufrichteschachtel 180x130x60 E-Welle,0421,180,130,60,E,2-farbig,0.95,1,100,Stanzen
+K10_0203_300x200x100_C,12.1,12,22000,5,Auslauf,Faltkarton 300x200x100 C-Welle,0203,300,200,100,C,ohne,0.55,4,55,Wellpappe
+K11_0201_250x200x150_C,28.7,21,70000,3,Auslauf,Faltkarton 250x200x150 C-Welle,0201,250,200,150,C,ohne,0.41,9,30,Wellpappe
+K12_0427_250x175x80_E_GP,10.9,9,14000,7,Zukunft,Versandschachtel 250x175x80 E-Welle Graspapier,0427,250,175,80,E,ohne,0.78,3,60,Wellpappe
+K13_0711_300x200x150_B_AB,17.2,28,26000,7,Zukunft,Faltkarton mit Automatikboden 300x200x150 B-Welle,0711,300,200,150,B,ohne,0.66,5,35,Kleben
+K14_0201_300x200x150_EB,27.8,17,48000,4,Standard,Faltkarton 300x200x150 EB-Welle,0201,300,200,150,EB,ohne,0.58,7,33,Wellpappe

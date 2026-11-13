@@ -35,6 +35,8 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 | 13.11. | Keine Erzeugung von ERP-Testdaten, bevor die Felder feststehen. | Gespräch Yannick, Lukas, Yu | BESCHLOSSEN |
 | 13.11. | Der HTML-Prototyp der Umsetzung ist nur eine Konzeptdemo und wird nicht weiter als Maßstab für die Daten verwendet. | Teamtreffen 13.11. | BESCHLOSSEN |
 | 13.11. | Projektname und Logo: vArIanz – KI-basiertes Variantenmanagement (Konzept). | Teamtreffen 13.11.; `logo.jpeg` | BESCHLOSSEN |
+| 13.11. | Schema v0.2: `Must_Have` und `Bemerkung` aus Variantentabelle, Vorlage und Testdaten entfernt; Beispielzeilen der Vorlage werden über die Kennung `BEISPIEL_…` erkannt. | `generator/felder.py`, `reports/FELDLISTE_v0.2_DE.pdf` | BESCHLOSSEN (folgt aus dem Treffen) |
+| 13.11. | Ein gemeinsamer Datensatz mit vier Strategieprofilen statt eines Datensatzes je Strategie (passt zu Folie 11: gleicher Datensatz, anderes Profil, andere Empfehlung). | Yu | VORSCHLAG |
 
 ## 3. Termine
 
@@ -57,8 +59,8 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 | --- | --- |
 | D1 Mindestfelder | Feldliste v0.1 im Treffen vorgestellt, Rückmeldung positiv. Das Konzept erstellt jetzt eine eigene Fassung; danach Abgleich. |
 | D2 Produktfall und Strategieprofile | Jonas hat 15 Varianten aus dem RAJA-Katalog eingetragen. Pausiert, bis die Felder feststehen. |
-| D3 Datenmodell und JSON-Schema | v0.1 vorhanden; v1 nach dem Feldabgleich (ohne `Must_Have`, ohne subjektive Beschreibungen). |
-| D7/D10 Validierung, Integration | Konverter und Prüfregeln vorhanden, 71 Tests; im Treffen positiv bewertet. |
+| D3 Datenmodell und JSON-Schema | v0.2 vorhanden (ohne `Must_Have` und `Bemerkung`); v1 nach dem Feldabgleich mit dem Konzept. |
+| D7/D10 Validierung, Integration | Konverter und Prüfregeln vorhanden, 70 Tests für v0.2; im Treffen positiv bewertet. |
 | D8 Testszenarien | Testfallkatalog v0.1 mit acht Fällen (Vorschlag). |
 | D4, D5, D6, D9, D11 | noch nicht begonnen; D6 (Generator für die ERP-Datenblöcke) wartet auf die Felder. |
 
@@ -66,7 +68,7 @@ Wie könnte ein KI-Agent aussehen, der anhand von Stücklisten, Portfolioübersi
 
 1. Felder: Fassung des Konzepts abwarten und abgleichen; welche weiteren subjektiven Felder entfallen (`Bezeichnung`, `Beschreibung`?); `Bemerkung` entfällt sicher.
 2. Bleibt `Hauptkunde_Anteil_Pct` drin? Im Treffen positiv bewertet, Entscheidung beim Konzept.
-3. Ein Datensatz je Strategie oder ein gemeinsamer Datensatz mit vier Profilen.
+3. Ein Datensatz je Strategie oder ein gemeinsamer Datensatz mit vier Profilen (Vorschlag Yu: gemeinsamer Datensatz). Auf Folie 10 steht noch „ein Datensatz je Strategie“.
 4. Analyse je Produktgruppe statt für das ganze Unternehmen (Diskussion im Konzept) – Folgen für die Datenstruktur.
 5. Konzept für die ERP-Anbindung (Schnittstellen, API, Abfragen) – liegt beim Konzept, Datenerhebung liefert die Datenblöcke.
 6. Freigabe des Pilotfalls Kartonagen durch Steffen Feld (20.11.).

@@ -172,7 +172,7 @@ def test_csv_liefert_zusatzfelder_als_text(seite, varianten, protokoll):
     lade(seite, TESTORDNER / "varianten.csv", len(varianten))
     erste = seite.evaluate("portfolioData[0]")
     assert erste["Preis_EUR"] == "0.32" and erste["Anzahl_Kunden"] == "62"
-    assert erste["Umsatz_TEUR"] == 198.4 and erste["Must_Have"] is True
+    assert erste["Umsatz_TEUR"] == 198.4
     protokoll["befunde"]["csv_zusatzfelder_als_text"] = {"Preis_EUR": erste["Preis_EUR"], "Anzahl_Kunden": erste["Anzahl_Kunden"]}
 
 
@@ -210,7 +210,7 @@ def test_dezimalkomma_csv_wird_falsch_gelesen(seite, varianten, profile, tmp_pat
     erste = seite.evaluate("portfolioData[0]")
     assert erste["Umsatz_TEUR"] == 198 and erste["Marge_Pct"] == 4               # 198,4 → 198 | 4
     assert erste["Absatz_Stk"] == 24 and erste["Ruestkosten_Index"] == 620000    # alles um eine Spalte verrutscht
-    assert erste["Must_Have"] is False                                           # "Standard" statt true
+    assert erste["Status"] == "2"                                                # Rüstkosten-Index statt Status
     stelle_ein(seite, profile[0])
     falsch = lies_ergebnis(seite)
     richtig = logik.bewerte(varianten, profile[0])
@@ -222,14 +222,3 @@ def test_dezimalkomma_csv_wird_falsch_gelesen(seite, varianten, profile, tmp_pat
         "varianten_behalten_falsch": falsch["varianten_behalten"],
         "varianten_behalten_richtig": richtig["varianten_behalten"],
     }
-
-
-def test_wahr_falsch_aus_excel_wird_nicht_erkannt(seite, varianten, tmp_path, protokoll):
-    """Befund: Must_Have erkennt true/1/ja, aber nicht WAHR (deutsches Excel)."""
-    text = (TESTORDNER / "varianten.csv").read_text(encoding="utf-8").replace(",true,", ",WAHR,").replace(",false,", ",FALSCH,")
-    datei = tmp_path / "wahr_falsch.csv"
-    datei.write_text(text, encoding="utf-8")
-    lade(seite, datei, len(varianten))
-    anzahl = seite.evaluate("portfolioData.filter(r => r.Must_Have).length")
-    assert anzahl == 0 and sum(v["Must_Have"] for v in varianten) == 3
-    protokoll["befunde"]["WAHR_wird_nicht_als_must_have_erkannt"] = True

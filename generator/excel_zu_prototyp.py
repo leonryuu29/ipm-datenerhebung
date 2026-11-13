@@ -117,12 +117,12 @@ def lies_varianten(wb) -> tuple[list[dict], list[str], list[str]]:
                 continue
             if w is not None:
                 z[feld["name"]] = w
-        if str(z.get("Bemerkung", "")).upper().startswith(BEISPIEL_PRAEFIX):
+        if str(z.get("Variante", "")).upper().startswith(BEISPIEL_PRAEFIX):
             beispiele += 1
             continue
         zeilen.append(z)
     if beispiele:
-        hinweise.append(f"{beispiele} Beispielzeile(n) übersprungen (Bemerkung beginnt mit {BEISPIEL_PRAEFIX}).")
+        hinweise.append(f"{beispiele} Beispielzeile(n) übersprungen (Kennung beginnt mit {BEISPIEL_PRAEFIX}).")
     return zeilen, fehler, hinweise
 
 

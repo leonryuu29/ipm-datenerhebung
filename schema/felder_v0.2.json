@@ -1,6 +1,6 @@
 {
-  "version": "0.1",
-  "stand": "2026-11-11",
+  "version": "0.2",
+  "stand": "2026-11-13",
   "kennzeichnung": "SYNTHETIC",
   "prototyp_spalten": [
     "Variante",
@@ -8,8 +8,7 @@
     "Marge_Pct",
     "Absatz_Stk",
     "Ruestkosten_Index",
-    "Status",
-    "Must_Have"
+    "Status"
   ],
   "bloecke": [
     {
@@ -17,8 +16,8 @@
       "stufe": 1,
       "titel": "Varianten (Portfolio-Tabelle)",
       "titel_cn": "变体（产品组合表）",
-      "beschreibung": "Eine Zeile je Produktvariante. Die ersten sieben Felder liest der Prototyp direkt; die Erweiterungsfelder werden als Zusatzinformation in den Prompt übernommen.",
-      "beschreibung_cn": "每个产品变体一行。前七个字段原型可以直接读取；扩展字段会作为附加信息写进 Prompt。",
+      "beschreibung": "Eine Zeile je Produktvariante, nur objektive Produktinformationen. Die ersten sechs Felder sind Pflicht; die übrigen Felder sind optional.",
+      "beschreibung_cn": "每个产品变体一行，只放客观的产品信息。前六个字段必填，其余字段可选。",
       "felder": [
         {
           "name": "Variante",
@@ -108,20 +107,6 @@
           "prototyp_id": null,
           "beschreibung": "Lebenszyklus-Status. Der Prototyp wertet 'Auslauf' und 'Zukunft' gesondert aus.",
           "beschreibung_cn": "生命周期状态。原型会单独处理 'Auslauf'（退市）和 'Zukunft'（未来产品）。"
-        },
-        {
-          "name": "Must_Have",
-          "pflicht": true,
-          "typ": "boolean",
-          "einheit": "",
-          "erlaubte_werte": null,
-          "minimum": null,
-          "maximum": null,
-          "beispiel": true,
-          "herkunft": "Prototyp",
-          "prototyp_id": null,
-          "beschreibung": "Variante ist für einen Kernmarkt oder ein K.O.-Kriterium unverzichtbar und wird vom Prototyp geschützt.",
-          "beschreibung_cn": "该变体对核心市场或硬性要求不可缺少，原型会保护它不被删除。"
         },
         {
           "name": "Bezeichnung",
@@ -308,20 +293,6 @@
           "prototyp_id": null,
           "beschreibung": "Artikelnummer des öffentlichen Katalogprodukts, an dem sich Maße und Ausführung orientieren. Quelle und Abrufdatum stehen in data/reference.",
           "beschreibung_cn": "变体所参考的公开目录产品的货号（尺寸和规格以它为依据）。来源和获取日期记在 data/reference 里。"
-        },
-        {
-          "name": "Bemerkung",
-          "pflicht": false,
-          "typ": "string",
-          "einheit": "",
-          "erlaubte_werte": null,
-          "minimum": null,
-          "maximum": null,
-          "beispiel": "nahezu identisch mit K02",
-          "herkunft": "Erweiterung",
-          "prototyp_id": null,
-          "beschreibung": "Freitext, z. B. Sonderfall oder Annahme. Kein Komma, kein Semikolon.",
-          "beschreibung_cn": "备注，比如特殊情况或假设。不能有逗号和分号。"
         }
       ]
     },

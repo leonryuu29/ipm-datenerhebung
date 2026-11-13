@@ -1,5 +1,5 @@
-Prüfbericht für technischer_testdatensatz_v0.1.xlsx
-Schema v0.1 · Kennzeichnung SYNTHETIC
+Prüfbericht für technischer_testdatensatz_v0.2.xlsx
+Schema v0.2 · Kennzeichnung SYNTHETIC
 Varianten gelesen: 14 · Strategieprofile gelesen: 4
 
 FEHLER (0)

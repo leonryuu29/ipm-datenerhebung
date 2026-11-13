@@ -74,8 +74,6 @@ def pruefe_varianten(varianten: list[dict]) -> tuple[list[str], list[str]]:
             hinweise.append(f"Variante {i} ({vid}): nur ein Kunde, aber Hauptkunde_Anteil_Pct = {anteil} statt 100.")
         if kunden == 0 and (absatz or 0) > 0:
             hinweise.append(f"Variante {i} ({vid}): Absatz vorhanden, aber Anzahl_Kunden = 0.")
-        if v.get("Status") == "Auslauf" and v.get("Must_Have") is True:
-            hinweise.append(f"Variante {i} ({vid}): Auslauf und Must_Have zugleich – der Prototyp behält sie, wenn Kernmärkte geschützt sind.")
     return fehler, hinweise
 
 

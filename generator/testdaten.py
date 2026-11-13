@@ -1,4 +1,4 @@
-"""Technischer Testdatensatz v0.1 (SYNTHETIC).
+"""Technischer Testdatensatz (SYNTHETIC), Schema v0.2.
 
 Erfundene Werte, nur zum Testen von Schema, Vorlage, Konverter und Prototyp.
 Fachlich NICHT abgestimmt – der fachliche Datensatz kommt aus D2/D5 (Jonas).
@@ -13,9 +13,11 @@ Eingebaute Testszenarien:
 """
 from __future__ import annotations
 
+# Kernmarkt und Notiz stehen nur hier im Code (Erklärung der Testfälle) und werden nicht exportiert:
+# Must_Have und Bemerkung sind seit Schema v0.2 nicht mehr Teil der Daten.
 SPALTEN = ["Variante", "Bezeichnung", "FEFCO_Typ", "Laenge_mm", "Breite_mm", "Hoehe_mm", "Wellenart", "Druck",
-           "Preis_EUR", "Absatz_Stk", "Marge_Pct", "Ruestkosten_Index", "Status", "Must_Have",
-           "Anzahl_Kunden", "Hauptkunde_Anteil_Pct", "Variantenbildung_Schritt", "Bemerkung"]
+           "Preis_EUR", "Absatz_Stk", "Marge_Pct", "Ruestkosten_Index", "Status", "_Kernmarkt",
+           "Anzahl_Kunden", "Hauptkunde_Anteil_Pct", "Variantenbildung_Schritt", "_Notiz"]
 
 _ROH = [
     ("K01_0201_200x150x100_B", "Faltkarton 200x150x100 B-Welle", "0201", 200, 150, 100, "B", "ohne", 0.32, 620000, 24, 2, "Standard", True, 62, 8, "Zuschnitt", "Bestseller"),
@@ -40,9 +42,7 @@ def varianten() -> list[dict]:
     for roh in _ROH:
         z = dict(zip(SPALTEN, roh))
         z["Umsatz_TEUR"] = round(z["Absatz_Stk"] * z["Preis_EUR"] / 1000, 1)
-        if not z["Bemerkung"]:
-            del z["Bemerkung"]
-        zeilen.append(z)
+        zeilen.append({k: w for k, w in z.items() if not k.startswith("_")})
     return zeilen
 
 

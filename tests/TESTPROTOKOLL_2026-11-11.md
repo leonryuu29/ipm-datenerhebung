@@ -2,6 +2,8 @@
 
 **Teilprojekt Datenerhebung · IPM WiSe 2026/27 · Gruppe 6 · durchgeführt von Yu Zhaoze**
 
+> Hinweis (13.11.2026): Dieses Protokoll gilt für Schema v0.1 (mit `Must_Have`). Seit v0.2 entfallen `Must_Have` und `Bemerkung`. Die Dateien in `tests/ergebnisse/` werden bei jedem Testlauf überschrieben; die Zahlen unten stammen aus dem Lauf vom 11.11.2026.
+
 ## 1. Ergebnis in Kürze
 
 - **70 von 70 automatischen Tests bestanden** (pytest, Laufzeit rund 6 Sekunden).

@@ -1,20 +1,20 @@
 {
-  "lauf": "2026-11-12T16:57:39+01:00",
+  "lauf": "2026-11-14T00:02:15+01:00",
   "prototyp": {
     "datei": "ki_wrapper_variantenmanagement.html",
     "sha256": "cf360e0f297bccb1877b5b361fff45f12bf3ca960a27d27b62886edc0d2d6520",
     "stand": "2026-11-10",
     "quelle": "Google Drive, IPM Gruppe 6"
   },
-  "datensatz": "data/synthetic/technischer_test_v0.1",
-  "schema_version": "0.1",
+  "datensatz": "data/synthetic/technischer_test_v0.2",
+  "schema_version": "0.2",
   "strategien": {
     "Massenproduzent": {
       "entscheidungen": {
-        "K01_0201_200x150x100_B": "Behalten (Schutz: Kernmarkt)",
-        "K02_0201_300x200x150_B": "Behalten (Schutz: Kernmarkt)",
+        "K01_0201_200x150x100_B": "Behalten (Optimal)",
+        "K02_0201_300x200x150_B": "Behalten (Optimal)",
         "K03_0201_305x200x150_B": "Streichen (Finanz-Ziel verfehlt)",
-        "K04_0201_400x300x200_BC": "Behalten (Schutz: Kernmarkt)",
+        "K04_0201_400x300x200_BC": "Behalten (Optimal)",
         "K05_0201_600x400x400_BC": "Behalten (Optimal)",
         "K06_0427_250x175x80_E_1c": "Modularisieren (Rüstkosten zu hoch)",
         "K07_0427_310x220x100_E_4c": "Modularisieren (Rüstkosten zu hoch)",
@@ -53,10 +53,10 @@
     },
     "Kostenführer": {
       "entscheidungen": {
-        "K01_0201_200x150x100_B": "Behalten (Schutz: Kernmarkt)",
-        "K02_0201_300x200x150_B": "Behalten (Schutz: Kernmarkt)",
+        "K01_0201_200x150x100_B": "Behalten (Optimal)",
+        "K02_0201_300x200x150_B": "Behalten (Optimal)",
         "K03_0201_305x200x150_B": "Streichen (Finanz-Ziel verfehlt)",
-        "K04_0201_400x300x200_BC": "Behalten (Schutz: Kernmarkt)",
+        "K04_0201_400x300x200_BC": "Behalten (Optimal)",
         "K05_0201_600x400x400_BC": "Streichen (Finanz-Ziel verfehlt)",
         "K06_0427_250x175x80_E_1c": "Modularisieren (Rüstkosten zu hoch)",
         "K07_0427_310x220x100_E_4c": "Modularisieren (Rüstkosten zu hoch)",
@@ -95,10 +95,10 @@
     },
     "Innovationsführer": {
       "entscheidungen": {
-        "K01_0201_200x150x100_B": "Behalten (Schutz: Kernmarkt)",
-        "K02_0201_300x200x150_B": "Behalten (Schutz: Kernmarkt)",
+        "K01_0201_200x150x100_B": "Behalten (Optimal)",
+        "K02_0201_300x200x150_B": "Behalten (Optimal)",
         "K03_0201_305x200x150_B": "Streichen (Finanz-Ziel verfehlt)",
-        "K04_0201_400x300x200_BC": "Behalten (Schutz: Kernmarkt)",
+        "K04_0201_400x300x200_BC": "Behalten (Optimal)",
         "K05_0201_600x400x400_BC": "Behalten (Optimal)",
         "K06_0427_250x175x80_E_1c": "Behalten (Optimal)",
         "K07_0427_310x220x100_E_4c": "Behalten (Optimal)",
@@ -137,10 +137,10 @@
     },
     "Nischenanbieter": {
       "entscheidungen": {
-        "K01_0201_200x150x100_B": "Behalten (Schutz: Kernmarkt)",
-        "K02_0201_300x200x150_B": "Behalten (Schutz: Kernmarkt)",
+        "K01_0201_200x150x100_B": "Streichen (Finanz-Ziel verfehlt)",
+        "K02_0201_300x200x150_B": "Behalten (Optimal)",
         "K03_0201_305x200x150_B": "Streichen (Finanz-Ziel verfehlt)",
-        "K04_0201_400x300x200_BC": "Behalten (Schutz: Kernmarkt)",
+        "K04_0201_400x300x200_BC": "Streichen (Finanz-Ziel verfehlt)",
         "K05_0201_600x400x400_BC": "Streichen (Finanz-Ziel verfehlt)",
         "K06_0427_250x175x80_E_1c": "Behalten (Optimal)",
         "K07_0427_310x220x100_E_4c": "Behalten (Optimal)",
@@ -152,12 +152,12 @@
         "K13_0711_300x200x150_B_AB": "Behalten (Schutz: R&D Zukunft)",
         "K14_0201_300x200x150_EB": "Streichen (Finanz-Ziel verfehlt)"
       },
-      "varianten_behalten": 7,
+      "varianten_behalten": 5,
       "varianten_gesamt": 14,
-      "umsatzabdeckung_pct": 67.2,
-      "marge_behalten_pct": 25.0,
-      "komplexitaet_reduktion_pct": 50.0,
-      "abweichung_zum_ziel": "-27.8% vs. Ziel (95%)",
+      "umsatzabdeckung_pct": 33.7,
+      "marge_behalten_pct": 25.8,
+      "komplexitaet_reduktion_pct": 64.3,
+      "abweichung_zum_ziel": "-61.3% vs. Ziel (95%)",
       "profil": {
         "Strategie": "Nischenanbieter",
         "Beschreibung": "Kundenspezifische Lösungen in kleinen Mengen",
@@ -180,7 +180,7 @@
   },
   "befunde": {
     "zusatzfelder_im_prompt": true,
-    "prompt_zeichen_json": 10034,
+    "prompt_zeichen_json": 9194,
     "csv_zusatzfelder_als_text": {
       "Preis_EUR": "0.32",
       "Anzahl_Kunden": "62"
@@ -195,8 +195,7 @@
         "Marge_Pct": 4,
         "Absatz_Stk": 24,
         "Ruestkosten_Index": 620000,
-        "Status": "2",
-        "Must_Have": false
+        "Status": "2"
       },
       "erste_zeile_richtig": {
         "Variante": "K01_0201_200x150x100_B",
@@ -204,12 +203,10 @@
         "Marge_Pct": 24,
         "Absatz_Stk": 620000,
         "Ruestkosten_Index": 2,
-        "Status": "Standard",
-        "Must_Have": true
+        "Status": "Standard"
       },
       "varianten_behalten_falsch": 1,
       "varianten_behalten_richtig": 8
-    },
-    "WAHR_wird_nicht_als_must_have_erkannt": true
+    }
   }
 }

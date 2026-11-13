@@ -8,7 +8,7 @@ from __future__ import annotations
 
 
 def empfehlung(v: dict, p: dict) -> str:
-    if p["Kernmaerkte_schuetzen"] and v["Must_Have"]:
+    if p["Kernmaerkte_schuetzen"] and v.get("Must_Have", False):  # seit v0.2 nicht mehr in den Daten
         return "Behalten (Schutz: Kernmarkt)"
     if p["Zukunft_schuetzen"] and v["Status"] == "Zukunft":
         return "Behalten (Schutz: R&D Zukunft)"

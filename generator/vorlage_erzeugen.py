@@ -136,7 +136,7 @@ def blatt_varianten(wb, bereiche, zeilen: list[dict], beispiel: bool):
     ws.row_dimensions[1].height = 32
     ws.row_dimensions[2].height = 36
 
-    breiten = {"Variante": 30, "Bezeichnung": 44, "Status": 14, "Variantenbildung_Schritt": 20, "Bemerkung": 44,
+    breiten = {"Variante": 30, "Bezeichnung": 44, "Status": 14, "Variantenbildung_Schritt": 20,
                "Hauptkunde_Anteil_Pct": 16, "Ruestkosten_Index": 14, "Referenz_Artikelnr": 18}
     for fl in felder:
         ws.column_dimensions[spalte[fl["name"]]].width = breiten.get(fl["name"], 13)
@@ -176,7 +176,7 @@ def blatt_varianten(wb, bereiche, zeilen: list[dict], beispiel: bool):
         ws.add_data_validation(dv)
         dv.add(f"{spalte[feldname]}{ERSTE_DATENZEILE}:{spalte[feldname]}{LETZTE_DATENZEILE}")
 
-    liste("Status", "Status"); liste("Must_Have", "JaNein"); liste("Wellenart", "Wellenart")
+    liste("Status", "Status"); liste("Wellenart", "Wellenart")
     liste("Druck", "Druck"); liste("Variantenbildung_Schritt", "Variantenbildung_Schritt")
 
     def zahl(feldname, art, lo, hi=None):
@@ -363,10 +363,10 @@ def blatt_anleitung(wb, technischer_test: bool):
     zeile("4  Zurückgeben", "Datei an Yu schicken oder im Repo unter data/synthetic ablegen. Yu wandelt sie um und lädt sie in den Prototyp.")
 
     kopf("Farben")
-    zeile("Dunkle Kopfzelle", "Pflichtfeld. Diese sieben Felder liest der Prototyp direkt.", farbe=DUNKEL)
+    zeile("Dunkle Kopfzelle", "Pflichtfeld (sechs Felder). Ohne sie wird die Datei nicht übergeben.", farbe=DUNKEL)
     ws.cell(row=r - 1, column=2).font = f(bold=True, color="FFFFFF")
     zeile("Helle Kopfzelle", "Optionales Feld. Wird als Zusatzinformation in den Prompt übernommen.", farbe=TEAL)
-    zeile("Graue Zeilen", f"Beispielvarianten. Zeilen, deren Bemerkung mit {BEISPIEL_PRAEFIX} beginnt, werden bei der Umwandlung übersprungen.", farbe="EDEDED")
+    zeile("Graue Zeilen", f"Beispielvarianten. Zeilen, deren Kennung mit {BEISPIEL_PRAEFIX} beginnt, werden bei der Umwandlung übersprungen.", farbe="EDEDED")
     zeile("Gelbe Zellen", "Vorschlagswerte der Strategieprofile – bitte prüfen und überschreiben.", farbe=GELB)
     zeile("Graue Spalten", "Prüfformeln, nicht ausfüllen.", farbe=GRAU)
 
@@ -377,20 +377,19 @@ def blatt_anleitung(wb, technischer_test: bool):
     zeile("Zahlen", "Als normale Excel-Zahl eingeben. Die Umwandlung schreibt Dezimalpunkte, damit der Prototyp sie richtig liest.")
     zeile("Ja / Nein", "Felder mit ja / nein über das Dropdown wählen.")
     zeile("Umsatz", "Umsatz_TEUR soll zu Absatz_Stk × Preis_EUR / 1000 passen (Abweichung höchstens 2 %).")
-    zeile("Quellen", "Annahmen und Quellen bitte kurz notieren, z. B. in der Bemerkung oder in einer eigenen Datei unter data/reference.")
+    zeile("Quellen", "Annahmen und Quellen bitte kurz in einer eigenen Datei notieren (data/reference). In die Tabelle kommen nur objektive Produktdaten.")
 
-    kopf("Was der Prototyp mit den Daten macht (Stand 10.11.2026)")
+    kopf("Wie der Demo-Prototyp die Daten bewertet (nur Konzeptdemo, Stand 10.11.2026)")
     zeile("Reihenfolge der Regeln", "Der Prototyp prüft jede Variante der Reihe nach. Die erste zutreffende Regel entscheidet.")
-    zeile("1  Kernmarkt", "Must_Have = ja und Schutz der Kernmärkte aktiv → Behalten.")
-    zeile("2  Zukunft", "Status = Zukunft und Zukunftsschutz aktiv → Behalten.")
-    zeile("3  Auslauf", "Status = Auslauf und Auslauf streichen aktiv → Streichen.")
-    zeile("4  Finanzziel", "Marge_Pct unter Mindestmarge oder Absatz_Stk unter Mindestabsatz → Streichen.")
-    zeile("5  Rüstkosten", "Ruestkosten_Index über dem Höchstwert → Modularisieren.")
-    zeile("6  Sonst", "Behalten.")
+    zeile("1  Zukunft", "Status = Zukunft und Zukunftsschutz aktiv → Behalten.")
+    zeile("2  Auslauf", "Status = Auslauf und Auslauf streichen aktiv → Streichen.")
+    zeile("3  Finanzziel", "Marge_Pct unter Mindestmarge oder Absatz_Stk unter Mindestabsatz → Streichen.")
+    zeile("4  Rüstkosten", "Ruestkosten_Index über dem Höchstwert → Modularisieren.")
+    zeile("5  Sonst", "Behalten.")
     zeile("Kennzahlen", "Daraus berechnet der Prototyp: Anzahl behaltener Varianten, Umsatzabdeckung in Prozent und die durchschnittliche Marge der behaltenen Varianten.")
 
     kopf("Welche Fälle in den Daten vorkommen sollten")
-    zeile("Bestseller", "Zwei bis drei Standardgrößen mit hohem Absatz, viele Kunden, Must_Have = ja.")
+    zeile("Bestseller", "Zwei bis drei Standardgrößen mit hohem Absatz und vielen Kunden.")
     zeile("Großkunde", "Eine Sondergröße, die nur ein einziger Großkunde kauft: hoher Umsatz, niedrige Marge, Hauptkunde_Anteil_Pct = 100.")
     zeile("Fast gleich", "Zwei Varianten, die sich nur um wenige Millimeter oder in der Wellenart unterscheiden.")
     zeile("Auslauf", "Mindestens eine Variante mit Status Auslauf.")
@@ -434,14 +433,12 @@ def baue(pfad: Path, zeilen: list[dict], profile: list[dict], *, beispiel: bool,
 
 
 def beispielzeilen() -> list[dict]:
-    """Drei Beispielvarianten für die Vorlage (Bestseller, fast gleiche Größe, Großkunde)."""
+    """Drei Beispielvarianten für die Vorlage (Bestseller, fast gleiche Größe, Großkunde).
+
+    Die Kennung beginnt mit BEISPIEL_, damit der Konverter die Zeilen überspringt."""
     alle = {z["Variante"]: z for z in testdaten.varianten()}
-    texte = {
-        "K02_0201_300x200x150_B": "BEISPIEL Bestseller - Zeile überschreiben oder löschen",
-        "K03_0201_305x200x150_B": "BEISPIEL fast gleiche Größe wie K02 - Zeile überschreiben oder löschen",
-        "K08_0201_347x253x118_B_SG": "BEISPIEL Sondergröße für einen Großkunden - Zeile überschreiben oder löschen",
-    }
-    return [dict(alle[k], Bemerkung=t) for k, t in texte.items()]
+    namen = ["K02_0201_300x200x150_B", "K03_0201_305x200x150_B", "K08_0201_347x253x118_B_SG"]
+    return [dict(alle[k], Variante=f"{BEISPIEL_PRAEFIX}_{k}") for k in namen]
 
 
 def main():

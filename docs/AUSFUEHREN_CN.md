@@ -40,13 +40,13 @@ python -m venv .venv
 ```
 .venv\Scripts\python generator\schema_erzeugen.py
 .venv\Scripts\python generator\vorlage_erzeugen.py
-.venv\Scripts\python generator\excel_zu_prototyp.py data\synthetic\technischer_test_v0.1\technischer_testdatensatz_v0.1.xlsx --out data\synthetic\technischer_test_v0.1
+.venv\Scripts\python generator\excel_zu_prototyp.py data\synthetic\technischer_test_v0.2\technischer_testdatensatz_v0.2.xlsx --out data\synthetic\technischer_test_v0.2
 ```
 
 | 命令 | 生成什么 | 正常时显示 |
 | --- | --- | --- |
 | `schema_erzeugen.py` | `schema\` 里的 4 个 JSON | 4 行 `geschrieben: ...` |
-| `vorlage_erzeugen.py` | 空模板 `vorlagen\VARIANTEN_VORLAGE_v0.1.xlsx` 和测试 Excel | 2 行 `geschrieben: ...` |
+| `vorlage_erzeugen.py` | 空模板 `vorlagen\VARIANTEN_VORLAGE_v0.2.xlsx` 和测试 Excel | 2 行 `geschrieben: ...` |
 | `excel_zu_prototyp.py` | `varianten.csv`、`varianten.json`、`strategieprofile.json`、`pruefbericht.txt` | 检查报告，最后一行 `ERGEBNIS: Dateien geschrieben.` |
 
 什么时候需要跑：改了 `generator\felder.py`（字段）或 `generator\testdaten.py`（测试数据）之后。平时不用跑。
@@ -80,7 +80,7 @@ python -m venv .venv
 ## 4. 转换 Jonas 的表
 
 ```
-.venv\Scripts\python generator\excel_zu_prototyp.py "T:\新学期\IPM\项目文件\one-drive(共享接口）\VARIANTEN_VORLAGE_v0.1.xlsx" --out data\synthetic\jonas_v1
+.venv\Scripts\python generator\excel_zu_prototyp.py "T:\新学期\IPM\项目文件\one-drive(共享接口）\VARIANTEN_VORLAGE_v0.2.xlsx" --out data\synthetic\jonas_v1
 ```
 
 有错误时只写检查报告 `pruefbericht.txt`，不生成 CSV 和 JSON。没错误时生成的 `varianten.json` 就是要上传到原型的文件。

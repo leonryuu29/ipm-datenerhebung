@@ -6,7 +6,6 @@
     "Absatz_Stk": 620000,
     "Ruestkosten_Index": 2,
     "Status": "Standard",
-    "Must_Have": true,
     "Bezeichnung": "Faltkarton 200x150x100 B-Welle",
     "FEFCO_Typ": "0201",
     "Laenge_mm": 200,
@@ -17,8 +16,7 @@
     "Preis_EUR": 0.32,
     "Anzahl_Kunden": 62,
     "Hauptkunde_Anteil_Pct": 8,
-    "Variantenbildung_Schritt": "Zuschnitt",
-    "Bemerkung": "Bestseller"
+    "Variantenbildung_Schritt": "Zuschnitt"
   },
   {
     "Variante": "K02_0201_300x200x150_B",
@@ -27,7 +25,6 @@
     "Absatz_Stk": 510000,
     "Ruestkosten_Index": 2,
     "Status": "Standard",
-    "Must_Have": true,
     "Bezeichnung": "Faltkarton 300x200x150 B-Welle",
     "FEFCO_Typ": "0201",
     "Laenge_mm": 300,
@@ -38,8 +35,7 @@
     "Preis_EUR": 0.45,
     "Anzahl_Kunden": 45,
     "Hauptkunde_Anteil_Pct": 9,
-    "Variantenbildung_Schritt": "Zuschnitt",
-    "Bemerkung": "Bestseller"
+    "Variantenbildung_Schritt": "Zuschnitt"
   },
   {
     "Variante": "K03_0201_305x200x150_B",
@@ -48,7 +44,6 @@
     "Absatz_Stk": 38000,
     "Ruestkosten_Index": 4,
     "Status": "Standard",
-    "Must_Have": false,
     "Bezeichnung": "Faltkarton 305x200x150 B-Welle",
     "FEFCO_Typ": "0201",
     "Laenge_mm": 305,
@@ -59,8 +54,7 @@
     "Preis_EUR": 0.47,
     "Anzahl_Kunden": 3,
     "Hauptkunde_Anteil_Pct": 71,
-    "Variantenbildung_Schritt": "Zuschnitt",
-    "Bemerkung": "T2 nahezu identisch mit K02"
+    "Variantenbildung_Schritt": "Zuschnitt"
   },
   {
     "Variante": "K04_0201_400x300x200_BC",
@@ -69,7 +63,6 @@
     "Absatz_Stk": 240000,
     "Ruestkosten_Index": 3,
     "Status": "Standard",
-    "Must_Have": true,
     "Bezeichnung": "Faltkarton 400x300x200 BC-Welle",
     "FEFCO_Typ": "0201",
     "Laenge_mm": 400,
@@ -89,7 +82,6 @@
     "Absatz_Stk": 95000,
     "Ruestkosten_Index": 3,
     "Status": "Standard",
-    "Must_Have": false,
     "Bezeichnung": "Faltkarton 600x400x400 BC-Welle",
     "FEFCO_Typ": "0201",
     "Laenge_mm": 600,
@@ -109,7 +101,6 @@
     "Absatz_Stk": 180000,
     "Ruestkosten_Index": 5,
     "Status": "Standard",
-    "Must_Have": false,
     "Bezeichnung": "Versandschachtel 250x175x80 E-Welle 1-farbig",
     "FEFCO_Typ": "0427",
     "Laenge_mm": 250,
@@ -129,7 +120,6 @@
     "Absatz_Stk": 60000,
     "Ruestkosten_Index": 8,
     "Status": "Standard",
-    "Must_Have": false,
     "Bezeichnung": "Versandschachtel 310x220x100 E-Welle 4-farbig",
     "FEFCO_Typ": "0427",
     "Laenge_mm": 310,
@@ -140,8 +130,7 @@
     "Preis_EUR": 1.1,
     "Anzahl_Kunden": 6,
     "Hauptkunde_Anteil_Pct": 40,
-    "Variantenbildung_Schritt": "Druck",
-    "Bemerkung": "hoher Rüstaufwand durch Vierfarbdruck"
+    "Variantenbildung_Schritt": "Druck"
   },
   {
     "Variante": "K08_0201_347x253x118_B_SG",
@@ -150,7 +139,6 @@
     "Absatz_Stk": 310000,
     "Ruestkosten_Index": 6,
     "Status": "Sonderlocke",
-    "Must_Have": false,
     "Bezeichnung": "Faltkarton Sondergröße 347x253x118 B-Welle",
     "FEFCO_Typ": "0201",
     "Laenge_mm": 347,
@@ -161,8 +149,7 @@
     "Preis_EUR": 0.52,
     "Anzahl_Kunden": 1,
     "Hauptkunde_Anteil_Pct": 100,
-    "Variantenbildung_Schritt": "Zuschnitt",
-    "Bemerkung": "T1 Sondergröße für einen Großkunden"
+    "Variantenbildung_Schritt": "Zuschnitt"
   },
   {
     "Variante": "K09_0421_180x130x60_E",
@@ -171,7 +158,6 @@
     "Absatz_Stk": 900,
     "Ruestkosten_Index": 9,
     "Status": "Sonderlocke",
-    "Must_Have": false,
     "Bezeichnung": "Aufrichteschachtel 180x130x60 E-Welle",
     "FEFCO_Typ": "0421",
     "Laenge_mm": 180,
@@ -182,8 +168,7 @@
     "Preis_EUR": 0.95,
     "Anzahl_Kunden": 1,
     "Hauptkunde_Anteil_Pct": 100,
-    "Variantenbildung_Schritt": "Stanzen",
-    "Bemerkung": "T5 Kleinserie"
+    "Variantenbildung_Schritt": "Stanzen"
   },
   {
     "Variante": "K10_0203_300x200x100_C",
@@ -192,7 +177,6 @@
     "Absatz_Stk": 22000,
     "Ruestkosten_Index": 5,
     "Status": "Auslauf",
-    "Must_Have": false,
     "Bezeichnung": "Faltkarton 300x200x100 C-Welle",
     "FEFCO_Typ": "0203",
     "Laenge_mm": 300,
@@ -203,8 +187,7 @@
     "Preis_EUR": 0.55,
     "Anzahl_Kunden": 4,
     "Hauptkunde_Anteil_Pct": 55,
-    "Variantenbildung_Schritt": "Wellpappe",
-    "Bemerkung": "T3 Auslauf mit schwacher Marge"
+    "Variantenbildung_Schritt": "Wellpappe"
   },
   {
     "Variante": "K11_0201_250x200x150_C",
@@ -213,7 +196,6 @@
     "Absatz_Stk": 70000,
     "Ruestkosten_Index": 3,
     "Status": "Auslauf",
-    "Must_Have": false,
     "Bezeichnung": "Faltkarton 250x200x150 C-Welle",
     "FEFCO_Typ": "0201",
     "Laenge_mm": 250,
@@ -224,8 +206,7 @@
     "Preis_EUR": 0.41,
     "Anzahl_Kunden": 9,
     "Hauptkunde_Anteil_Pct": 30,
-    "Variantenbildung_Schritt": "Wellpappe",
-    "Bemerkung": "T3 Auslauf mit guter Marge"
+    "Variantenbildung_Schritt": "Wellpappe"
   },
   {
     "Variante": "K12_0427_250x175x80_E_GP",
@@ -234,7 +215,6 @@
     "Absatz_Stk": 14000,
     "Ruestkosten_Index": 7,
     "Status": "Zukunft",
-    "Must_Have": false,
     "Bezeichnung": "Versandschachtel 250x175x80 E-Welle Graspapier",
     "FEFCO_Typ": "0427",
     "Laenge_mm": 250,
@@ -245,8 +225,7 @@
     "Preis_EUR": 0.78,
     "Anzahl_Kunden": 3,
     "Hauptkunde_Anteil_Pct": 60,
-    "Variantenbildung_Schritt": "Wellpappe",
-    "Bemerkung": "T4 Zukunft mit schwacher Marge"
+    "Variantenbildung_Schritt": "Wellpappe"
   },
   {
     "Variante": "K13_0711_300x200x150_B_AB",
@@ -255,7 +234,6 @@
     "Absatz_Stk": 26000,
     "Ruestkosten_Index": 7,
     "Status": "Zukunft",
-    "Must_Have": false,
     "Bezeichnung": "Faltkarton mit Automatikboden 300x200x150 B-Welle",
     "FEFCO_Typ": "0711",
     "Laenge_mm": 300,
@@ -266,8 +244,7 @@
     "Preis_EUR": 0.66,
     "Anzahl_Kunden": 5,
     "Hauptkunde_Anteil_Pct": 35,
-    "Variantenbildung_Schritt": "Kleben",
-    "Bemerkung": "T4 Zukunft mit guter Marge"
+    "Variantenbildung_Schritt": "Kleben"
   },
   {
     "Variante": "K14_0201_300x200x150_EB",
@@ -276,7 +253,6 @@
     "Absatz_Stk": 48000,
     "Ruestkosten_Index": 4,
     "Status": "Standard",
-    "Must_Have": false,
     "Bezeichnung": "Faltkarton 300x200x150 EB-Welle",
     "FEFCO_Typ": "0201",
     "Laenge_mm": 300,
@@ -287,7 +263,6 @@
     "Preis_EUR": 0.58,
     "Anzahl_Kunden": 7,
     "Hauptkunde_Anteil_Pct": 33,
-    "Variantenbildung_Schritt": "Wellpappe",
-    "Bemerkung": "T6 wie K02 mit stärkerer Welle"
+    "Variantenbildung_Schritt": "Wellpappe"
   }
 ]

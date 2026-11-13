@@ -52,13 +52,14 @@ def test_csv_ist_fuer_den_prototyp_lesbar(tmp_path):
     text = (tmp_path / "varianten.csv").read_text(encoding="utf-8")
     zeilen = text.strip().split("\n")
     kopf = zeilen[0].split(",")
-    assert kopf[:7] == fd.PROTOTYP_SPALTEN
+    assert kopf[:len(fd.PROTOTYP_SPALTEN)] == fd.PROTOTYP_SPALTEN
     assert ";" not in text and '"' not in text and "\r" not in text
     for z in zeilen[1:]:
         assert len(z.split(",")) == len(kopf), z
     daten = list(csv.DictReader(zeilen))
     assert len(daten) == 14
-    assert daten[0]["Umsatz_TEUR"] == "198.4" and daten[0]["Must_Have"] == "true" and daten[0]["FEFCO_Typ"] == "0201"
+    assert daten[0]["Umsatz_TEUR"] == "198.4" and daten[0]["FEFCO_Typ"] == "0201"
+    assert "Must_Have" not in kopf and "Bemerkung" not in kopf
 
 
 def _kopie_mit(tmp_path, aendern):
@@ -88,7 +89,6 @@ FEHLER_IN_EXCEL = {
     "Kommazahl statt ganzer Zahl": (lambda ws: ws.cell(row=3, column=spalte(ws, "Ruestkosten_Index"), value=2.5), "ganze Zahl"),
     "Pflichtfeld leer": (lambda ws: setattr(ws.cell(row=3, column=spalte(ws, "Status")), "value", None), "'Status' is a required property"),
     "Komma in Bezeichnung": (lambda ws: ws.cell(row=3, column=spalte(ws, "Bezeichnung"), value="Faltkarton, klein"), "CSV-Import"),
-    "ja/nein falsch": (lambda ws: ws.cell(row=3, column=spalte(ws, "Must_Have"), value="vielleicht"), "ja/nein"),
     "Spalte unbekannt": (lambda ws: ws.cell(row=1, column=spalte(ws, "Druck"), value="Farbe"), "unbekanntes Feld"),
 }
 
@@ -118,7 +118,7 @@ def test_beispielzeilen_werden_neben_echten_zeilen_uebersprungen(tmp_path):
     wb = load_workbook(ziel)
     ws = wb["Varianten"]
     neu = {"Variante": "N01_0201_100x100x100_B", "Umsatz_TEUR": 10, "Marge_Pct": 20, "Absatz_Stk": 20000,
-           "Ruestkosten_Index": 3, "Status": "Standard", "Must_Have": "nein"}
+           "Ruestkosten_Index": 3, "Status": "Standard"}
     for k, w in neu.items():
         ws.cell(row=6, column=spalte(ws, k), value=w)
     wb.save(ziel)
@@ -126,7 +126,7 @@ def test_beispielzeilen_werden_neben_echten_zeilen_uebersprungen(tmp_path):
     assert code == 0, bericht
     v = json.loads((tmp_path / "aus" / "varianten.json").read_text(encoding="utf-8"))
     assert [x["Variante"] for x in v] == ["N01_0201_100x100x100_B"]
-    assert v[0]["Must_Have"] is False
+    assert "Must_Have" not in v[0]
 
 
 def test_spalte_raja_artikelnr_wird_als_referenz_gelesen(tmp_path):
@@ -141,4 +141,14 @@ def test_spalte_raja_artikelnr_wird_als_referenz_gelesen(tmp_path):
     v = json.loads((tmp_path / "aus" / "varianten.json").read_text(encoding="utf-8"))
     assert v[0]["Referenz_Artikelnr"] == "CAS16" and "Referenz_Artikelnr" not in v[1]
     kopf = (tmp_path / "aus" / "varianten.csv").read_text(encoding="utf-8").split("\n")[0].split(",")
-    assert kopf[:7] == fd.PROTOTYP_SPALTEN and "Referenz_Artikelnr" in kopf
+    assert kopf[:len(fd.PROTOTYP_SPALTEN)] == fd.PROTOTYP_SPALTEN and "Referenz_Artikelnr" in kopf
+
+
+def test_ja_nein_falsch_im_strategieprofil_stoppt_die_uebergabe(tmp_path):
+    def aendern(wb):
+        ws = wb["Strategieprofile"]
+        for r in range(2, ws.max_row + 1):
+            if ws.cell(row=r, column=1).value == "Kernmaerkte_schuetzen":
+                ws.cell(row=r, column=4, value="vielleicht")
+    code, bericht = konv.wandle_um(_kopie_mit(tmp_path, aendern), tmp_path / "aus")
+    assert code == 1 and "ja/nein" in bericht
